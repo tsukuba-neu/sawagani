@@ -1,5 +1,5 @@
 <template>
-  <span class="editable-field">
+  <span class="editable-field" :class="{ 'is-multiline': props.multiline }">
     <textarea
       v-if="props.multiline"
       class="text"
@@ -41,6 +41,10 @@ const model = defineModel<string | number>()
 </script>
 
 <style scoped>
+.editable-field {
+  display: inline-block;
+}
+
 input,
 textarea {
   position: relative;
@@ -63,12 +67,13 @@ textarea {
   }
 }
 
-textarea {
-  resize: none;
-}
+.editable-field:not(.is-multiline) {
+  vertical-align: middle;
 
-.text {
-  height: 1em;
+  .text {
+    vertical-align: middle;
+    height: 1em;
+  }
 }
 
 .prefix-wrap {

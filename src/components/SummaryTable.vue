@@ -351,11 +351,13 @@
       class="border centered-v table-cell-pad"
       style="grid-row: 23; grid-column: 2"
     >
-      預金（<EditableField
-        v-model="bank1Name"
-        placeholder="サンプル銀行"
-        allowOverflow
-      />）
+      <span>
+        預金（<EditableField
+          v-model="bank1Name"
+          placeholder="サンプル銀行"
+          allowOverflow
+        />）
+      </span>
     </div>
     <NumSplitField
       style="grid-row: 23; grid-column: 3"
@@ -369,11 +371,13 @@
       class="border centered-v table-cell-pad"
       style="grid-row: 24; grid-column: 2"
     >
-      預金（<EditableField
-        v-model="bank2Name"
-        placeholder="サンプル銀行"
-        allowOverflow
-      />）
+      <span>
+        預金（<EditableField
+          v-model="bank2Name"
+          placeholder="サンプル銀行"
+          allowOverflow
+        />）</span
+      >
     </div>
     <NumSplitField
       style="grid-row: 24; grid-column: 3"
