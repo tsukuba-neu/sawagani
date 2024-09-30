@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>@tsukuba-neu/sawagani</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@700&family=Noto+Serif+JP&family=Roboto+Mono:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page {
+        size: A4 portrait;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        font-family: var(--font-family-serif);
+        font-size: 10pt;
+        line-height: 10pt;
+        --border-width: 0.5pt;
+        --border-width-double: 2.5pt;
+        --border-width-bold: 1.5pt;
+        --num-place-width: 12px;
+        --font-family-serif: 'ＭＳ 明朝', 'Noto Serif JP', sans-serif;
+        --font-family-sans: 'ＭＳ ゴシック', 'BIZ UDGothic', sans-serif;
+        --font-family-number: "'Roboto Mono', monospace";
+      }
+
+      :root,
+      html,
+      body,
+      #app {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./index.ts" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "ES6"],
+    "moduleResolution": "bundler",
+    "module": "preserve",
+    "isolatedModules": true,
+    "downlevelIteration": true,
+    "types": ["vite/client"]
+  }
+}
