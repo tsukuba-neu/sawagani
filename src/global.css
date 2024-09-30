@@ -85,7 +85,7 @@
 }
 
 .table-row {
-  min-height: 30pt;
+  min-height: 20pt;
 }
 
 .table-text {
@@ -97,33 +97,6 @@
 
 .table-cell-pad {
   padding-left: 4pt;
-}
-
-.editable-field {
-  appearance: none;
-  border: none;
-  font-size: 1em;
-  background-color: transparent;
-
-  &:is(input) {
-    height: 1em;
-  }
-}
-
-@media screen {
-  .editable-field {
-    background-color: #eef;
-    border-radius: 3px;
-    font-family: var(--font-family-sans);
-
-    &:focus {
-      outline: 2px solid #06f;
-    }
-
-    &:is(:invalid) {
-      background-color: #fee;
-    }
-  }
 }
 
 @media print {

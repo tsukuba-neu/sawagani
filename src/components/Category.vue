@@ -11,19 +11,28 @@
       />
       <TableColumnPurpose
         :noFooter="props.noSum"
-        :additionalColumns="props.additionalPurposeColumns"
+        :additionalColumns="
+          props.additionalPurposeColumns?.map((c) => c.header)
+        "
       />
       <TableColumnAmount :noFooter="props.noSum" />
       <TableColumnDoNotWrite :noFooter="props.noSum" />
       <div class="text-rows">
-        <div class="table-row">
-          <TableTextDate value="0506"></TableTextDate>
-          <TableTextNumber v-if="props.withNumberColumn" value="1" />
+        <div v-for="transaction of props.transactions" class="table-row">
+          <TableTextDate :value="transaction.date"></TableTextDate>
+          <TableTextNumber
+            v-if="props.withNumberColumn"
+            :value="transaction.receipt"
+          />
           <TableTextPurpose
-            :additionalColumns="props.additionalPurposeColumns"
-            :value="`前月からの繰越金`"
+            :additionalColumns="
+              props.additionalPurposeColumns?.map(
+                (c) => transaction[c.key] as string,
+              )
+            "
+            :value="transaction.description"
           ></TableTextPurpose>
-          <TableTextAmount :value="10000"></TableTextAmount>
+          <TableTextAmount :value="transaction.amount"></TableTextAmount>
           <TableTextDoNotWrite />
         </div>
       </div>
@@ -40,12 +49,14 @@
             centered: i >= 3,
           }"
         >
-          {{ props.sumFooterRowLabels?.[i - 1] }}
+          {{ props.sumFooterRows?.[i - 1]?.label }}
         </div>
       </div>
       <div class="table-column--amount">
-        <div v-for="_ in sumFooterRowLength" class="spacer">
-          <NumSplit :n="9" />
+        <div v-for="i in sumFooterRowLength" class="spacer">
+          <NumSplitField :n="9">
+            {{ props.sumFooterRows?.[i - 1]?.value }}
+          </NumSplitField>
         </div>
       </div>
       <div class="table-column--do-not-write">
@@ -56,7 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import NumSplit from './NumSplit.vue'
 import TableColumnAmount from './TableColumnAmount.vue'
 import TableColumnDate from './TableColumnDate.vue'
 import TableColumnDoNotWrite from './TableColumnDoNotWrite.vue'
@@ -67,16 +77,25 @@ import TableTextPurpose from './TableTextPurpose.vue'
 import TableTextAmount from './TableTextAmount.vue'
 import TableTextDoNotWrite from './TableTextDoNotWrite.vue'
 import TableTextNumber from './TableTextNumber.vue'
+import { Transaction } from '../types/transaction'
+import NumSplitField from './NumSplitField.vue'
 
 const props = defineProps<{
   noFooter?: boolean
   noSum?: boolean
   withNumberColumn?: boolean
-  additionalPurposeColumns?: string[]
-  sumFooterRowLabels?: string[]
+  additionalPurposeColumns?: { header: string; key: keyof Transaction }[]
+  sumFooterRows?: (
+    | {
+        label: string
+        value?: string | number
+      }
+    | undefined
+  )[]
+  transactions: Transaction[]
 }>()
 
-const sumFooterRowLength = props.sumFooterRowLabels?.length || 2
+const sumFooterRowLength = props.sumFooterRows?.length || 2
 </script>
 
 <style scoped>

@@ -3,18 +3,16 @@
     <div class="flex-root">
       <div class="var-field">
         <span class="label">団体名</span>
-        <input
-          type="text"
-          class="editable-field centered"
+        <EditableField
+          centered
           v-model="orgName"
           placeholder="記入例作成同好会"
           required
         />
       </div>
       <div class="var-field">
-        <input
-          type="text"
-          class="editable-field centered"
+        <EditableField
+          centered
           placeholder="4～6月分収支計算書"
           v-model="title"
           required
@@ -31,36 +29,33 @@
       <div class="signature">
         <div class="label">顧問または担当教員</div>
         <div class="name">氏名</div>
-        <input
-          type="text"
-          class="editable-field centered"
+        <EditableField
           v-model="advisorName"
           placeholder="山田 太郎"
           required
+          centered
         />
         <div class="stamp">印</div>
       </div>
       <div class="signature">
         <div class="label">代表者</div>
         <div class="name">氏名</div>
-        <input
-          type="text"
-          class="editable-field centered"
+        <EditableField
           v-model="representativeName"
           placeholder="田中 次郎"
           required
+          centered
         />
         <div class="stamp">印</div>
       </div>
       <div class="signature">
         <div class="label">会計責任者</div>
         <div class="name">氏名</div>
-        <input
-          type="text"
-          class="editable-field centered"
+        <EditableField
           v-model="accountantName"
           placeholder="佐藤 三郎"
           required
+          centered
         />
         <div class="stamp">印</div>
       </div>
@@ -71,7 +66,7 @@
     <div class="comments">
       <div class="comment-box comment-org">
         <div>意見・説明等記入欄（各団体の会計より）</div>
-        <textarea class="editable-field" v-model="orgComment"></textarea>
+        <EditableField multiline v-model="orgComment" />
       </div>
       <div class="comment-box comment-staff">
         <div>この欄には記入しないこと(財務局使用)<br />※チェック者所見</div>
@@ -88,6 +83,7 @@
 import { storeToRefs } from 'pinia'
 import { useDataStore } from '../store/data'
 import SummaryTable from './SummaryTable.vue'
+import EditableField from './EditableField.vue'
 
 const dataStore = useDataStore()
 const {
