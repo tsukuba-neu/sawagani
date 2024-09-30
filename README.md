@@ -18,7 +18,9 @@ sawaganiは、ExcelやGoogleスプレッドシートのような表計算ソフ�
 2. `Ctrl + A` （macOSでは `⌘ + A`）を押して、すべてのセルを選択します。
 3. `Ctrl + C` （macOSでは `⌘ + C`）を押して、セルをコピーします。
 
-[![帳簿テンプレートを開く](https://img.shields.io/badge/%E5%B8%B3%E7%B0%BF%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%92%E9%96%8B%E3%81%8F-emerald?style=for-the-badge)](https://docs.google.com/spreadsheets/d/1KirrcWmeYXQ-ao-qk0lQjc7xFgbi0-pzuZhfEIHRec0/edit)
+<a href="https://docs.google.com/spreadsheets/d/1KirrcWmeYXQ-ao-qk0lQjc7xFgbi0-pzuZhfEIHRec0/edit" target="_blank" rel="noopener">
+  <img alt="帳簿テンプレートを開く" src="https://img.shields.io/badge/%E5%B8%B3%E7%B0%BF%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%82%92%E9%96%8B%E3%81%8F-emerald?style=for-the-badge">
+</a>
 
 <img width="1176" alt="image" src="https://github.com/user-attachments/assets/4acb2388-6d07-4d33-8743-835d3df9eed7">
 
@@ -27,7 +29,9 @@ sawaganiは、ExcelやGoogleスプレッドシートのような表計算ソフ�
 1. 以下のリンクからsawaganiを開き、
 2. ページ上部の「クリップボードからインポート」ボタンをクリックします。クリップボードの読み取り許可を求められる場合は、許可します。
 
-[![sawaganiを開く](https://img.shields.io/badge/sawagani%E3%82%92%E9%96%8B%E3%81%8F-red?style=for-the-badge)](https://tsukuba-neu.github.io/sawagani/) 
+<a href="https://tsukuba-neu.github.io/sawagani/" target="_blank" rel="noopener">
+  <img src="https://img.shields.io/badge/sawagani%E3%82%92%E9%96%8B%E3%81%8F-red?style=for-the-badge" alt="sawaganiを開く">
+</a>
 
 <img width="821" alt="image" src="https://github.com/user-attachments/assets/090dff71-81c1-4497-b854-9777f9a09c67">
 
