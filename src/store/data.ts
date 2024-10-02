@@ -128,13 +128,13 @@ export const useDataStore = defineStore('data', () => {
     representativeName.value = data.representativeName
     accountantName.value = data.accountantName
     orgComment.value = data.orgComment
-    cashAmount.value = data.cashAmount
-    postalSavingsAmount.value = data.postalSavingsAmount
-    bank1Amount.value = data.bank1Amount
+    cashAmount.value = +data.cashAmount
+    postalSavingsAmount.value = +data.postalSavingsAmount
+    bank1Amount.value = +data.bank1Amount
     bank1Name.value = data.bank1Name
-    bank2Amount.value = data.bank2Amount
+    bank2Amount.value = +data.bank2Amount
     bank2Name.value = data.bank2Name
-    otherAmount.value = data.otherAmount
+    otherAmount.value = +data.otherAmount
     book.value = data.book.filter(
       (row) => row.length > 0 && row.some((cell) => cell.match(/\S/)),
     )

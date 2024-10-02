@@ -281,7 +281,14 @@
       現金
     </div>
     <NumSplitField style="grid-row: 21; grid-column: 3">
-      <EditableField v-model="cashAmount" prefix="¥" />
+      <EditableField
+        v-model="cashAmount"
+        type="number"
+        prefix="¥"
+        :validationError="
+          isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
+        "
+      />
     </NumSplitField>
     <NumSplitField style="grid-row: 21; grid-column: 4" />
 
@@ -292,7 +299,14 @@
       郵便貯金
     </div>
     <NumSplitField style="grid-row: 22; grid-column: 3">
-      <EditableField v-model="postalSavingsAmount" prefix="¥" />
+      <EditableField
+        v-model="postalSavingsAmount"
+        type="number"
+        prefix="¥"
+        :validationError="
+          isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
+        "
+      />
     </NumSplitField>
     <NumSplitField style="grid-row: 22; grid-column: 4" />
 
@@ -309,7 +323,14 @@
       </span>
     </div>
     <NumSplitField style="grid-row: 23; grid-column: 3">
-      <EditableField v-model="bank1Amount" prefix="¥" />
+      <EditableField
+        v-model="bank1Amount"
+        type="number"
+        prefix="¥"
+        :validationError="
+          isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
+        "
+      />
     </NumSplitField>
     <NumSplitField style="grid-row: 23; grid-column: 4" />
 
@@ -326,7 +347,14 @@
       >
     </div>
     <NumSplitField style="grid-row: 24; grid-column: 3">
-      <EditableField v-model="bank2Amount" prefix="¥" />
+      <EditableField
+        v-model="bank2Amount"
+        type="number"
+        prefix="¥"
+        :validationError="
+          isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
+        "
+      />
     </NumSplitField>
     <NumSplitField style="grid-row: 24; grid-column: 4" />
 
@@ -337,7 +365,14 @@
       その他
     </div>
     <NumSplitField style="grid-row: 25; grid-column: 3">
-      <EditableField v-model="otherAmount" prefix="¥" />
+      <EditableField
+        v-model="otherAmount"
+        type="number"
+        prefix="¥"
+        :validationError="
+          isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
+        "
+      />
     </NumSplitField>
     <NumSplitField style="grid-row: 25; grid-column: 4" />
   </div>
@@ -396,6 +431,17 @@ const expeditionEgress = computed(() =>
     0,
   ),
 )
+
+const isCarryOverMatch = computed(() => {
+  const sum =
+    cashAmount.value +
+    postalSavingsAmount.value +
+    bank1Amount.value +
+    bank2Amount.value +
+    otherAmount.value
+  console.log(sum)
+  return sum === ingress.value - generalEgress.value - expeditionEgress.value
+})
 </script>
 
 <style scoped>

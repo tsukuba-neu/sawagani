@@ -7,6 +7,7 @@
       v-model="model"
       :placeholder="props.placeholder"
       :required
+      ref="input"
     ></textarea>
     <input
       v-else
@@ -15,10 +16,17 @@
         'allow-overflow': allowOverflow,
         'is-centered': props.centered,
       }"
-      type="text"
-      v-model="model"
+      :type="type"
+      :value="model"
+      @input="
+        model =
+          type === 'number'
+            ? +($event.target as HTMLInputElement).value
+            : ($event.target as HTMLInputElement).value
+      "
       :placeholder="props.placeholder"
       :required
+      ref="input"
     />
     <span class="prefix-wrap">
       <span class="prefix text">{{ props.prefix }}</span>
@@ -28,16 +36,43 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, useTemplateRef, watch } from 'vue'
+
 const props = defineProps<{
+  type?: 'number' | 'text'
   placeholder?: string
   centered?: boolean
   allowOverflow?: boolean
   prefix?: string
   multiline?: boolean
   required?: boolean
+  validationError?: string
 }>()
 
 const model = defineModel<string | number>()
+
+const inputRef = useTemplateRef<HTMLInputElement | HTMLTextAreaElement>('input')
+
+watch(
+  () => props.validationError,
+  (error) => {
+    if (error) {
+      inputRef.value?.setCustomValidity(error)
+    } else {
+      inputRef.value?.setCustomValidity('')
+    }
+    inputRef.value?.reportValidity()
+  },
+)
+
+onMounted(() => {
+  if (inputRef.value) {
+    // invalid判定された瞬間にフォーカスが外れるのを防ぐ
+    inputRef.value.addEventListener('invalid', (e) => {
+      e.preventDefault()
+    })
+  }
+})
 </script>
 
 <style scoped>
@@ -48,6 +83,8 @@ const model = defineModel<string | number>()
 input,
 textarea {
   position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   border: none;
   font-size: 1em;
