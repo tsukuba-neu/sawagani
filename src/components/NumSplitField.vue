@@ -1,7 +1,7 @@
 <template>
   <div class="num-split-field">
     <NumSplit :n="9" />
-    <NumSplitText :prefix="props.prefix">
+    <NumSplitText>
       <slot />
     </NumSplitText>
   </div>
@@ -10,8 +10,6 @@
 <script setup lang="ts">
 import NumSplitText from './NumSplitText.vue'
 import NumSplit from './NumSplit.vue'
-
-const props = defineProps<{ prefix?: string }>()
 </script>
 
 <style scoped>
