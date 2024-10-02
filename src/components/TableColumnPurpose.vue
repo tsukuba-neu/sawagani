@@ -18,13 +18,15 @@
         class="additional-column border centered"
       ></div>
     </div>
-    <div v-if="!props.noFooter" class="table-footer border centered">合計</div>
+    <div v-if="props.footer" class="table-footer border centered">
+      {{ props.footer }}
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-  noFooter?: boolean
+  footer?: string | null
   additionalColumns?: string[]
 }>()
 </script>

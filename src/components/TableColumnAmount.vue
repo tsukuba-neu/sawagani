@@ -4,16 +4,17 @@
     <div class="table-body">
       <NumSplit :n="9" />
     </div>
-    <div v-if="!props.noFooter" class="table-footer">
-      <NumSplit :n="9" />
+    <div v-if="props.footer !== null" class="table-footer">
+      <NumSplitField :n="9">¥{{ props.footer }}</NumSplitField>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import NumSplit from './NumSplit.vue'
+import NumSplitField from './NumSplitField.vue'
 const props = defineProps<{
-  noFooter?: boolean
+  footer?: number | null
 }>()
 </script>
 

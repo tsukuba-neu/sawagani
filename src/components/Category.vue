@@ -10,12 +10,14 @@
         :noFooter="props.noSum"
       />
       <TableColumnPurpose
-        :noFooter="props.noSum"
+        :footer="props.noSum ? null : '合計'"
         :additionalColumns="
           props.additionalPurposeColumns?.map((c) => c.header)
         "
       />
-      <TableColumnAmount :noFooter="props.noSum" />
+      <TableColumnAmount
+        :footer="props.noSum ? null : sumOfTransactionAmount"
+      />
       <TableColumnDoNotWrite :noFooter="props.noSum" />
       <div class="text-rows">
         <div v-for="transaction of props.transactions" class="table-row">
@@ -79,6 +81,7 @@ import TableTextDoNotWrite from './TableTextDoNotWrite.vue'
 import TableTextNumber from './TableTextNumber.vue'
 import { Transaction } from '../types/transaction'
 import NumSplitField from './NumSplitField.vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   noFooter?: boolean
@@ -96,6 +99,10 @@ const props = defineProps<{
 }>()
 
 const sumFooterRowLength = props.sumFooterRows?.length || 2
+
+const sumOfTransactionAmount = computed(() =>
+  props.transactions.reduce((sum, transaction) => sum + transaction.amount, 0),
+)
 </script>
 
 <style scoped>
