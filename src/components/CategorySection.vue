@@ -1,33 +1,37 @@
 <template>
-  <div class="category-box">
+  <div class="category-section">
     <header class="title">
       <slot name="title" />
     </header>
     <main class="table border-wrap">
-      <TableColumnDate :noFooter="props.noSum" />
+      <TableColumnDate :no-footer="props.noSum" />
       <TableColumnNumber
         v-if="props.withNumberColumn"
-        :noFooter="props.noSum"
+        :no-footer="props.noSum"
       />
       <TableColumnPurpose
         :footer="props.noSum ? null : '合計'"
-        :additionalColumns="
+        :additional-columns="
           props.additionalPurposeColumns?.map((c) => c.header)
         "
       />
       <TableColumnAmount
         :footer="props.noSum ? null : sumOfTransactionAmount"
       />
-      <TableColumnDoNotWrite :noFooter="props.noSum" />
+      <TableColumnDoNotWrite :no-footer="props.noSum" />
       <div class="text-rows">
-        <div v-for="transaction of props.transactions" class="table-row">
+        <div
+          v-for="transaction of props.transactions"
+          :key="transaction.date + transaction.amount + transaction.description"
+          class="table-row"
+        >
           <TableTextDate :value="transaction.date"></TableTextDate>
           <TableTextNumber
             v-if="props.withNumberColumn"
             :value="transaction.receipt"
           />
           <TableTextPurpose
-            :additionalColumns="
+            :additional-columns="
               props.additionalPurposeColumns?.map(
                 (c) => transaction[c.key] as string,
               )
@@ -46,6 +50,7 @@
       <div class="table-column--purpose">
         <div
           v-for="i in sumFooterRowLength"
+          :key="i"
           class="border spacer"
           :class="{
             centered: i >= 3,
@@ -55,14 +60,18 @@
         </div>
       </div>
       <div class="table-column--amount">
-        <div v-for="i in sumFooterRowLength" class="spacer">
+        <div v-for="i in sumFooterRowLength" :key="i" class="spacer">
           <NumSplitField :n="9">
             {{ props.sumFooterRows?.[i - 1]?.value }}
           </NumSplitField>
         </div>
       </div>
       <div class="table-column--do-not-write">
-        <div v-for="_ in sumFooterRowLength" class="border spacer"></div>
+        <div
+          v-for="(_, i) in sumFooterRowLength"
+          :key="i"
+          class="border spacer"
+        ></div>
       </div>
     </footer>
   </div>
@@ -106,7 +115,7 @@ const sumOfTransactionAmount = computed(() =>
 </script>
 
 <style scoped>
-.category-box {
+.category-section {
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100%;

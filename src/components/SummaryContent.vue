@@ -4,17 +4,17 @@
       <div class="var-field">
         <span class="label">団体名</span>
         <EditableField
-          centered
           v-model="orgName"
+          centered
           placeholder="記入例作成同好会"
           required
         />
       </div>
       <div class="var-field">
         <EditableField
+          v-model="title"
           centered
           placeholder="4～6月分収支計算書"
-          v-model="title"
           required
         />
       </div>
@@ -66,7 +66,7 @@
     <div class="comments">
       <div class="comment-box comment-org">
         <div>意見・説明等記入欄（各団体の会計より）</div>
-        <EditableField multiline v-model="orgComment" />
+        <EditableField v-model="orgComment" multiline />
       </div>
       <div class="comment-box comment-staff">
         <div>この欄には記入しないこと(財務局使用)<br />※チェック者所見</div>

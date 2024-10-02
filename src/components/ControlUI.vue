@@ -1,9 +1,9 @@
 <template>
   <div class="control-ui">
-    <ButtonWithState :onClick="importFromClipboard" :time="1000">
-      <template v-slot:default> クリップボードからインポート </template>
-      <template v-slot:loading>クリップボードを読み取り中……</template>
-      <template v-slot:completed>クリップボードからインポートしました</template>
+    <ButtonWithState :on-click="importFromClipboard" :time="1000">
+      <template #default> クリップボードからインポート </template>
+      <template #loading>クリップボードを読み取り中……</template>
+      <template #completed>クリップボードからインポートしました</template>
     </ButtonWithState>
   </div>
 </template>

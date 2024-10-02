@@ -1,8 +1,8 @@
 <template>
   <button @click="onClick">
     <slot v-if="state === 'ready'"></slot>
-    <slot name="loading" v-else-if="state === 'loading'"></slot>
-    <slot name="completed" v-else-if="state === 'completed'"></slot>
+    <slot v-else-if="state === 'loading'" name="loading"></slot>
+    <slot v-else-if="state === 'completed'" name="completed"></slot>
   </button>
 </template>
 

@@ -40,7 +40,6 @@ const onDragLeave = (e: DragEvent) => {
 }
 
 onMounted(() => {
-  const overlay = document.querySelector('.drag-overlay') as HTMLElement
   document.addEventListener('dragover', onDragOver)
   document.addEventListener('drop', onDrop)
   document.addEventListener('dragleave', onDragLeave)

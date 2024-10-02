@@ -285,7 +285,7 @@
         v-model="cashAmount"
         type="number"
         prefix="¥"
-        :validationError="
+        :validation-error="
           isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
         "
       />
@@ -303,7 +303,7 @@
         v-model="postalSavingsAmount"
         type="number"
         prefix="¥"
-        :validationError="
+        :validation-error="
           isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
         "
       />
@@ -318,7 +318,7 @@
         預金（<EditableField
           v-model="bank1Name"
           placeholder="サンプル銀行"
-          allowOverflow
+          allow-overflow
         />）
       </span>
     </div>
@@ -327,7 +327,7 @@
         v-model="bank1Amount"
         type="number"
         prefix="¥"
-        :validationError="
+        :validation-error="
           isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
         "
       />
@@ -342,7 +342,7 @@
         預金（<EditableField
           v-model="bank2Name"
           placeholder="サンプル銀行"
-          allowOverflow
+          allow-overflow
         />）</span
       >
     </div>
@@ -351,7 +351,7 @@
         v-model="bank2Amount"
         type="number"
         prefix="¥"
-        :validationError="
+        :validation-error="
           isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
         "
       />
@@ -369,7 +369,7 @@
         v-model="otherAmount"
         type="number"
         prefix="¥"
-        :validationError="
+        :validation-error="
           isCarryOverMatch ? '' : '繰越金と合計金額が一致しません'
         "
       />

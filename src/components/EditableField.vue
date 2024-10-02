@@ -2,15 +2,16 @@
   <span class="editable-field" :class="{ 'is-multiline': props.multiline }">
     <textarea
       v-if="props.multiline"
+      ref="input"
+      v-model="model"
       class="text"
       :class="{ 'allow-overflow': props.allowOverflow }"
-      v-model="model"
       :placeholder="props.placeholder"
       :required
-      ref="input"
     ></textarea>
     <input
       v-else
+      ref="input"
       class="text"
       :class="{
         'allow-overflow': allowOverflow,
@@ -18,15 +19,14 @@
       }"
       :type="type"
       :value="model"
+      :placeholder="props.placeholder"
+      :required
       @input="
         model =
           type === 'number'
             ? +($event.target as HTMLInputElement).value
             : ($event.target as HTMLInputElement).value
       "
-      :placeholder="props.placeholder"
-      :required
-      ref="input"
     />
     <span class="prefix-wrap">
       <span class="prefix text">{{ props.prefix }}</span>

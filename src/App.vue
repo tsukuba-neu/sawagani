@@ -1,192 +1,192 @@
 <template>
   <ControlUI />
-  <Page>
+  <DocumentPage>
     <SummaryContent />
-  </Page>
-  <Page>
-    <Columns2>
+  </DocumentPage>
+  <DocumentPage>
+    <VColumns2>
       <div class="col-p2-left">
-        <Category
+        <CategorySection
           :transactions="
             transactions.filter(
               (t) => t.category === TransactionCategory.繰越金,
             )
           "
-          noFooter
-          noSum
+          no-footer
+          no-sum
         >
-          <template v-slot:title>②繰越金</template>
-        </Category>
-        <Category
+          <template #title>②繰越金</template>
+        </CategorySection>
+        <CategorySection
           :transactions="
             transactions.filter(
               (t) => t.category === TransactionCategory.内部収入,
             )
           "
         >
-          <template v-slot:title>③内部収入</template>
-        </Category>
+          <template #title>③内部収入</template>
+        </CategorySection>
       </div>
       <div class="col-p2-right">
-        <Category
+        <CategorySection
           :transactions="
             transactions.filter(
               (t) => t.category === TransactionCategory.外部収入,
             )
           "
         >
-          <template v-slot:title>④外部収入</template>
-        </Category>
-        <Category
+          <template #title>④外部収入</template>
+        </CategorySection>
+        <CategorySection
           :transactions="
             transactions.filter(
               (t) => t.category === TransactionCategory.その他収入,
             )
           "
-          :sumFooterRows="[, , { label: '①総収入', value: '¥' + 1000 }]"
+          :sum-footer-rows="[, , { label: '①総収入', value: '¥' + 1000 }]"
         >
-          <template v-slot:title>⑤その他</template>
-          <template v-slot:footer> </template>
-        </Category>
+          <template #title>⑤その他</template>
+          <template #footer> </template>
+        </CategorySection>
       </div>
-    </Columns2>
-  </Page>
-  <Page>
-    <Columns2>
-      <Category
+    </VColumns2>
+  </DocumentPage>
+  <DocumentPage>
+    <VColumns2>
+      <CategorySection
         :transactions="
           transactions.filter(
             (t) => t.category === TransactionCategory.大会参加連盟加盟費,
           )
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '18']"
+        with-number-column
+        :sum-footer-row-labels="['', '18']"
       >
-        <template v-slot:title>⑦大会参加連盟加盟費</template>
-      </Category>
-      <Category
+        <template #title>⑦大会参加連盟加盟費</template>
+      </CategorySection>
+      <CategorySection
         :transactions="
           transactions.filter(
             (t) => t.category === TransactionCategory.施設機材使用料,
           )
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '19']"
+        with-number-column
+        :sum-footer-row-labels="['', '19']"
       >
-        <template v-slot:title>⑧施設機材使用料</template>
-      </Category>
-    </Columns2>
-  </Page>
-  <Page>
-    <Columns2>
-      <Category
+        <template #title>⑧施設機材使用料</template>
+      </CategorySection>
+    </VColumns2>
+  </DocumentPage>
+  <DocumentPage>
+    <VColumns2>
+      <CategorySection
         :transactions="
           transactions.filter((t) => t.category === TransactionCategory.謝礼費)
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '20']"
-        :additionalPurposeColumns="[{ header: '相手先', key: 'recipient' }]"
+        with-number-column
+        :sum-footer-row-labels="['', '20']"
+        :additional-purpose-columns="[{ header: '相手先', key: 'recipient' }]"
       >
-        <template v-slot:title>⑨謝礼費</template>
-      </Category>
-      <Category
+        <template #title>⑨謝礼費</template>
+      </CategorySection>
+      <CategorySection
         :transactions="
           transactions.filter(
             (t) => t.category === TransactionCategory.通信運搬費,
           )
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '21']"
-        :additionalPurposeColumns="[
+        with-number-column
+        :sum-footer-row-labels="['', '21']"
+        :additional-purpose-columns="[
           { header: '用途', key: 'transportPurpose' },
         ]"
       >
-        <template v-slot:title>⑩通信運搬費</template>
-      </Category>
-    </Columns2>
-  </Page>
-  <Page>
-    <Columns2>
-      <Category
+        <template #title>⑩通信運搬費</template>
+      </CategorySection>
+    </VColumns2>
+  </DocumentPage>
+  <DocumentPage>
+    <VColumns2>
+      <CategorySection
         :transactions="
           transactions.filter(
             (t) => t.category === TransactionCategory.印刷製本費,
           )
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '22']"
-        :additionalPurposeColumns="[{ header: '目的', key: 'printPurpose' }]"
+        with-number-column
+        :sum-footer-row-labels="['', '22']"
+        :additional-purpose-columns="[{ header: '目的', key: 'printPurpose' }]"
       >
-        <template v-slot:title>⑪印刷製本費</template>
-      </Category>
-      <Category
+        <template #title>⑪印刷製本費</template>
+      </CategorySection>
+      <CategorySection
         :transactions="
           transactions.filter(
             (t) => t.category === TransactionCategory.用具等購入費,
           )
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '23']"
-        :additionalPurposeColumns="[{ header: '所有者', key: 'owner' }]"
+        with-number-column
+        :sum-footer-row-labels="['', '23']"
+        :additional-purpose-columns="[{ header: '所有者', key: 'owner' }]"
       >
-        <template v-slot:title>⑫用具等購入費</template>
-      </Category>
-    </Columns2>
-  </Page>
-  <Page>
-    <Columns2>
-      <Category
+        <template #title>⑫用具等購入費</template>
+      </CategorySection>
+    </VColumns2>
+  </DocumentPage>
+  <DocumentPage>
+    <VColumns2>
+      <CategorySection
         :transactions="
           transactions.filter((t) => t.category === TransactionCategory.書籍費)
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '24']"
+        with-number-column
+        :sum-footer-row-labels="['', '24']"
       >
-        <template v-slot:title>⑬書籍費</template>
-      </Category>
-      <Category
+        <template #title>⑬書籍費</template>
+      </CategorySection>
+      <CategorySection
         :transactions="
           transactions.filter(
             (t) => t.category === TransactionCategory.その他支出,
           )
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '25']"
+        with-number-column
+        :sum-footer-row-labels="['', '25']"
       >
-        <template v-slot:title>⑭その他</template>
-      </Category>
-    </Columns2>
-  </Page>
-  <Page>
-    <Columns2>
-      <Category
+        <template #title>⑭その他</template>
+      </CategorySection>
+    </VColumns2>
+  </DocumentPage>
+  <DocumentPage>
+    <VColumns2>
+      <CategorySection
         :transactions="
           transactions.filter((t) => t.category === TransactionCategory.宿泊費)
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '26']"
-        :additionalPurposeColumns="[{ header: '延べ宿泊数', key: 'numStay' }]"
+        with-number-column
+        :sum-footer-row-labels="['', '26']"
+        :additional-purpose-columns="[{ header: '延べ宿泊数', key: 'numStay' }]"
       >
-        <template v-slot:title>⑯宿泊費</template>
-      </Category>
-      <Category
+        <template #title>⑯宿泊費</template>
+      </CategorySection>
+      <CategorySection
         :transactions="
           transactions.filter((t) => t.category === TransactionCategory.交通費)
         "
-        withNumberColumn
-        :sumFooterRowLabels="['', '27']"
+        with-number-column
+        :sum-footer-row-labels="['', '27']"
       >
-        <template v-slot:title>⑰交通費</template>
-      </Category>
-    </Columns2>
-  </Page>
+        <template #title>⑰交通費</template>
+      </CategorySection>
+    </VColumns2>
+  </DocumentPage>
   <DragDropImporter />
 </template>
 
 <script setup lang="ts">
-import Page from './components/Page.vue'
-import Columns2 from './components/Columns2.vue'
-import Category from './components/Category.vue'
+import DocumentPage from './components/DocumentPage.vue'
+import VColumns2 from './components/VColumns2.vue'
+import CategorySection from './components/CategorySection.vue'
 import SummaryContent from './components/SummaryContent.vue'
 import DragDropImporter from './components/DragDropImporter.vue'
 import ControlUI from './components/ControlUI.vue'

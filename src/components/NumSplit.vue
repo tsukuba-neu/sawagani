@@ -1,6 +1,6 @@
 <template>
   <div class="num-split">
-    <div v-for="_ in props.n" class="border place"></div>
+    <div v-for="(_, i) in props.n" :key="i" class="border place"></div>
   </div>
 </template>
 

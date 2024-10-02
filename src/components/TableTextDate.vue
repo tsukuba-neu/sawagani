@@ -10,7 +10,7 @@ const value = computed(() => {
   switch (typeof props.value) {
     case 'number':
       return ('0000' + props.value.toString()).slice(-4)
-    case 'string':
+    case 'string': {
       const yyyymmddMatch = props.value.match(
         /(\d{4})[/-](\d{1,2})[/-](\d{1,2})/,
       )
@@ -21,6 +21,9 @@ const value = computed(() => {
       } else {
         return ('0000' + props.value).slice(-4)
       }
+    }
+    default:
+      return ('0000' + props.value).slice(-4)
   }
 })
 </script>

@@ -5,6 +5,7 @@
     </div>
     <div
       v-for="v in props.additionalColumns"
+      :key="v"
       class="table-text additional-column"
     >
       {{ v }}
