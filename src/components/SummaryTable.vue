@@ -439,7 +439,6 @@ const isCarryOverMatch = computed(() => {
     bank1Amount.value +
     bank2Amount.value +
     otherAmount.value
-  console.log(sum)
   return sum === ingress.value - generalEgress.value - expeditionEgress.value
 })
 </script>
