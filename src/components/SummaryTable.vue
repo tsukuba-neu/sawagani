@@ -2,10 +2,7 @@
   <div class="summary-table border-wrap">
     <div class="border centered">頁</div>
     <div class="border" style="grid-row: 1; grid-column: 2"></div>
-    <div
-      class="border centered border-right-bold"
-      style="grid-row: 1; grid-column: 3"
-    >
+    <div class="border centered" style="grid-row: 1; grid-column: 3">
       合計金額
     </div>
     <div class="border centered" style="grid-row: 1; grid-column: 4">
@@ -46,7 +43,7 @@
     </div>
     <NumSplitField
       style="grid-row: 2; grid-column: 3"
-      class="border-bottom-double border-right-bold"
+      class="border-bottom-double"
     >
       ¥{{ ingress }}
     </NumSplitField>
@@ -61,10 +58,7 @@
     >
       ②繰越金
     </div>
-    <NumSplitField
-      style="grid-row: 3; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 3; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.繰越金) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 3; grid-column: 4" />
@@ -75,10 +69,7 @@
     >
       ③内部収入
     </div>
-    <NumSplitField
-      style="grid-row: 4; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 4; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.内部収入) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 4; grid-column: 4" />
@@ -89,10 +80,7 @@
     >
       ④外部収入
     </div>
-    <NumSplitField
-      style="grid-row: 5; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 5; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.外部収入) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 5; grid-column: 4" />
@@ -105,7 +93,7 @@
     </div>
     <NumSplitField
       style="grid-row: 6; grid-column: 3"
-      class="border-bottom-bold border-right-bold"
+      class="border-bottom-bold"
     >
       ¥{{ getCategorySum(TransactionCategory.その他収入) }}
     </NumSplitField>
@@ -120,10 +108,7 @@
     >
       ⑥一般総支出（⑦～⑭）
     </div>
-    <NumSplitField
-      style="grid-row: 7; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 7; grid-column: 3">
       ¥{{ generalEgress }}
     </NumSplitField>
     <NumSplitField style="grid-row: 7; grid-column: 4" />
@@ -134,10 +119,7 @@
     >
       ⑦大会参加連盟加盟費
     </div>
-    <NumSplitField
-      style="grid-row: 8; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 8; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.大会参加連盟加盟費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 8; grid-column: 4" />
@@ -148,10 +130,7 @@
     >
       ⑧施設機材使用料
     </div>
-    <NumSplitField
-      style="grid-row: 9; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 9; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.施設機材使用料) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 9; grid-column: 4" />
@@ -162,10 +141,7 @@
     >
       ⑨謝礼費
     </div>
-    <NumSplitField
-      style="grid-row: 10; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 10; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.謝礼費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 10; grid-column: 4" />
@@ -176,10 +152,7 @@
     >
       ⑩通信運搬費
     </div>
-    <NumSplitField
-      style="grid-row: 11; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 11; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.通信運搬費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 11; grid-column: 4" />
@@ -190,10 +163,7 @@
     >
       ⑪印刷製本費
     </div>
-    <NumSplitField
-      style="grid-row: 12; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 12; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.印刷製本費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 12; grid-column: 4" />
@@ -204,10 +174,7 @@
     >
       ⑫用具等購入費
     </div>
-    <NumSplitField
-      style="grid-row: 13; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 13; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.用具等購入費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 13; grid-column: 4" />
@@ -218,10 +185,7 @@
     >
       ⑬書籍費
     </div>
-    <NumSplitField
-      style="grid-row: 14; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 14; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.書籍費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 14; grid-column: 4" />
@@ -234,7 +198,7 @@
     </div>
     <NumSplitField
       style="grid-row: 15; grid-column: 3"
-      class="border-bottom-bold border-right-bold"
+      class="border-bottom-bold"
     >
       ¥{{ getCategorySum(TransactionCategory.その他支出) }}
     </NumSplitField>
@@ -251,7 +215,7 @@
     </div>
     <NumSplitField
       style="grid-row: 16; grid-column: 3"
-      class="border-bottom-double border-right-bold"
+      class="border-bottom-double"
     >
       ¥{{ expeditionEgress }}
     </NumSplitField>
@@ -266,10 +230,7 @@
     >
       ⑯宿泊費
     </div>
-    <NumSplitField
-      style="grid-row: 17; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 17; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.宿泊費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 17; grid-column: 4" />
@@ -280,10 +241,7 @@
     >
       ⑰交通費
     </div>
-    <NumSplitField
-      style="grid-row: 18; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 18; grid-column: 3">
       ¥{{ getCategorySum(TransactionCategory.交通費) }}
     </NumSplitField>
     <NumSplitField style="grid-row: 18; grid-column: 4" />
@@ -296,7 +254,7 @@
     </div>
     <NumSplitField
       style="grid-row: 19; grid-column: 3"
-      class="border-bottom-bold border-right-bold"
+      class="border-bottom-bold"
     >
       ¥{{ generalEgress + expeditionEgress }}
     </NumSplitField>
@@ -311,10 +269,7 @@
     >
       翌月への繰越金
     </div>
-    <NumSplitField
-      style="grid-row: 20; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 20; grid-column: 3">
       ¥{{ ingress - generalEgress - expeditionEgress }}
     </NumSplitField>
     <NumSplitField style="grid-row: 20; grid-column: 4" />
@@ -325,10 +280,7 @@
     >
       現金
     </div>
-    <NumSplitField
-      style="grid-row: 21; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 21; grid-column: 3">
       <EditableField v-model="cashAmount" prefix="¥" />
     </NumSplitField>
     <NumSplitField style="grid-row: 21; grid-column: 4" />
@@ -339,10 +291,7 @@
     >
       郵便貯金
     </div>
-    <NumSplitField
-      style="grid-row: 22; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 22; grid-column: 3">
       <EditableField v-model="postalSavingsAmount" prefix="¥" />
     </NumSplitField>
     <NumSplitField style="grid-row: 22; grid-column: 4" />
@@ -359,10 +308,7 @@
         />）
       </span>
     </div>
-    <NumSplitField
-      style="grid-row: 23; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 23; grid-column: 3">
       <EditableField v-model="bank1Amount" prefix="¥" />
     </NumSplitField>
     <NumSplitField style="grid-row: 23; grid-column: 4" />
@@ -379,10 +325,7 @@
         />）</span
       >
     </div>
-    <NumSplitField
-      style="grid-row: 24; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 24; grid-column: 3">
       <EditableField v-model="bank2Amount" prefix="¥" />
     </NumSplitField>
     <NumSplitField style="grid-row: 24; grid-column: 4" />
@@ -393,10 +336,7 @@
     >
       その他
     </div>
-    <NumSplitField
-      style="grid-row: 25; grid-column: 3"
-      class="border-right-bold"
-    >
+    <NumSplitField style="grid-row: 25; grid-column: 3">
       <EditableField v-model="otherAmount" prefix="¥" />
     </NumSplitField>
     <NumSplitField style="grid-row: 25; grid-column: 4" />

@@ -28,7 +28,6 @@
 :global(.num-split-field > .num-split-text) {
   display: grid;
   grid-template-columns: 1fr auto; /* 数字を右詰めで表示する */
-  transform: translateX(calc(var(--border-width)));
 
   .value {
     flex: 0 0 auto;

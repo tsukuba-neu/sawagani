@@ -45,11 +45,6 @@
   }
 }
 
-.border-right-bold {
-  border-right-style: solid;
-  border-right-width: var(--border-width-bold);
-}
-
 .centered {
   display: flex;
   justify-content: center;
