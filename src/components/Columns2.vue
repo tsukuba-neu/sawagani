@@ -10,7 +10,7 @@
   height: 100%;
 
   & > *:nth-child(2) {
-    transform: translateX(-0.5pt);
+    transform: translateX(calc(var(--border-width) * -1));
   }
 }
 </style>
