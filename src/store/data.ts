@@ -64,7 +64,7 @@ export const useDataStore = defineStore('data', () => {
 
     const result: Transaction[] = []
 
-    const [header] = book.value.slice(0, 1)
+    const header: string[] = book.value.slice(0, 1)[0].map(chomp)
     const rows = book.value.slice(1)
 
     for (const row of rows) {
