@@ -2,6 +2,12 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { Transaction, TransactionCategory } from '../types/transaction'
 
+/** 仕訳に応じて収支のセルの値を選択し返す
+ *
+ * @param category 仕訳
+ * @param ingressAmountStr 収入セルの値
+ * @param egressAmountStr 支出セルの値
+ */
 const selectAmount = (
   category: TransactionCategory,
   ingressAmountStr: string,
@@ -37,7 +43,10 @@ const selectAmount = (
   return null
 }
 
+/** 文字列の戦闘・末尾の空白文字を削除する */
 const chomp = (str: string) => str.replace(/^\s+|\s+$/g, '')
+
+/** 文字列を数値に変換する。¥記号やカンマ区切りにも対応する */
 const toNumber = (str: string) =>
   +chomp(str).replace(/^¥\s*/, '').replace(/,/g, '')
 
@@ -103,6 +112,7 @@ export const useDataStore = defineStore('data', () => {
     return result
   })
 
+  /** 状態データを保存するための出力関数 */
   const serialize = () => ({
     orgName: orgName.value,
     title: title.value,
@@ -119,8 +129,11 @@ export const useDataStore = defineStore('data', () => {
     otherAmount: otherAmount.value,
     book: book.value,
   })
+
+  /** 現在の状態の保存用オブジェクト */
   const serialized = computed(serialize)
 
+  /** 保存した状態を書き戻す */
   const parse = (data: ReturnType<typeof serialize>) => {
     orgName.value = data.orgName
     title.value = data.title
@@ -141,23 +154,55 @@ export const useDataStore = defineStore('data', () => {
   }
 
   return {
+    /** 団体名 */
     orgName,
+
+    /** 収支計算書タイトル */
     title,
+
+    /** 顧問氏名 */
     advisorName,
+
+    /** 団体責任者氏名 */
     representativeName,
+
+    /** 会計責任者氏名 */
     accountantName,
+
+    /** 団体からの表紙コメント */
     orgComment,
+
+    /** 現金の繰越残高 */
     cashAmount,
+
+    /** 郵便貯金の繰越残高 */
     postalSavingsAmount,
+
+    /** 繰越残高を持つ銀行1の残高 */
     bank1Amount,
+
+    /** 繰越残高を持つ銀行1の名前 */
     bank1Name,
+
+    /** 繰越残高を持つ銀行2の残高 */
     bank2Amount,
+
+    /** 繰越残高を持つ銀行2の名前 */
     bank2Name,
+
+    /** その他の繰越残高 */
     otherAmount,
+
+    /** 入力データ（パース済みのCSV） */
     book,
+
+    /** 仕訳済みの取引データ配列 */
     transactions,
 
+    /** 状態を保存するためのオブジェクト */
     serialized,
+
+    /** 保存した状態を書き戻す */
     parse,
   }
 })
