@@ -180,6 +180,9 @@
       </CategorySection>
     </VColumns2>
   </DocumentPage>
+  <DocumentPage>
+    <RestoreInfo />
+  </DocumentPage>
   <DragDropImporter />
 </template>
 
@@ -190,6 +193,7 @@ import CategorySection from './components/CategorySection.vue'
 import SummaryContent from './components/SummaryContent.vue'
 import DragDropImporter from './components/DragDropImporter.vue'
 import ControlUI from './components/ControlUI.vue'
+import RestoreInfo from './components/RestoreInfo.vue'
 import { useDataStore } from './store/data'
 import { TransactionCategory } from './types/transaction'
 import { storeToRefs } from 'pinia'
