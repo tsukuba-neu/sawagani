@@ -6,6 +6,7 @@
       <template #loading>クリップボードを読み取り中……</template>
       <template #completed>クリップボードからインポートしました</template>
     </ButtonWithState>
+    <button @click="book = []">リセット</button>
   </div>
 </template>
 
