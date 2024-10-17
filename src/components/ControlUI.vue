@@ -37,6 +37,19 @@ const importFromClipboard = async () => {
   gap: 10px;
 }
 
+.icon:hover {
+  animation: sawagani 0.3s ease-in-out 0s alternate infinite;
+}
+
+@keyframes sawagani {
+  0% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
+}
+
 @media print {
   .control-ui {
     display: none;
