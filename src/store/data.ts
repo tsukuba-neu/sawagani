@@ -66,6 +66,24 @@ export const useDataStore = defineStore('data', () => {
   const otherAmount = ref(0)
 
   const book = ref<string[][]>([])
+
+  const reset = () => {
+    orgName.value = ''
+    title.value = ''
+    advisorName.value = ''
+    representativeName.value = ''
+    accountantName.value = ''
+    orgComment.value = ''
+    cashAmount.value = 0
+    postalSavingsAmount.value = 0
+    bank1Amount.value = 0
+    bank1Name.value = ''
+    bank2Amount.value = 0
+    bank2Name.value = ''
+    otherAmount.value = 0
+    book.value = []
+  }
+
   const transactions = computed<Transaction[]>(() => {
     if (book.value.length === 0) {
       return []
@@ -204,5 +222,8 @@ export const useDataStore = defineStore('data', () => {
 
     /** 保存した状態を書き戻す */
     parse,
+
+    /** ストアを初期状態を戻す */
+    reset,
   }
 })

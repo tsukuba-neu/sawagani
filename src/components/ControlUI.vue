@@ -6,7 +6,14 @@
       <template #loading>クリップボードを読み取り中……</template>
       <template #completed>クリップボードからインポートしました</template>
     </ButtonWithState>
-    <button @click="book = []">リセット</button>
+    <button
+      @click="
+        confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
+          dataStore.reset()
+      "
+    >
+      リセット
+    </button>
   </div>
 </template>
 
@@ -15,6 +22,8 @@ import { storeToRefs } from 'pinia'
 import { useDataStore } from '../store/data'
 import ButtonWithState from './ButtonWithState.vue'
 import IconSVG from '/icon.svg?url'
+
+const confirm = (...args) => window.confirm(...args)
 
 const dataStore = useDataStore()
 const { book } = storeToRefs(dataStore)
