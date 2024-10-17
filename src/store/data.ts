@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { Transaction, TransactionCategory } from '../types/transaction'
+import packageJson from '../../package.json'
 
 /** 仕訳に応じて収支のセルの値を選択し返す
  *
@@ -132,6 +133,7 @@ export const useDataStore = defineStore('data', () => {
 
   /** 状態データを保存するための出力関数 */
   const serialize = () => ({
+    version: packageJson.version,
     orgName: orgName.value,
     title: title.value,
     advisorName: advisorName.value,
