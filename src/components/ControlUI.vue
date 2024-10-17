@@ -1,5 +1,6 @@
 <template>
   <div class="control-ui">
+    <img :src="IconSVG" width="50" height="30" alt="" class="icon" />
     <ButtonWithState :on-click="importFromClipboard" :time="1000">
       <template #default> クリップボードからインポート </template>
       <template #loading>クリップボードを読み取り中……</template>
@@ -12,6 +13,7 @@
 import { storeToRefs } from 'pinia'
 import { useDataStore } from '../store/data'
 import ButtonWithState from './ButtonWithState.vue'
+import IconSVG from '/icon.svg?url'
 
 const dataStore = useDataStore()
 const { book } = storeToRefs(dataStore)
@@ -29,7 +31,10 @@ const importFromClipboard = async () => {
 <style scoped>
 .control-ui {
   background-color: #eee;
+  height: 45px;
   padding: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 @media print {

@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => {
           ],
         },
         pwaAssets: {
-          image: 'public/favicon.svg',
+          image: 'public/icon.svg',
         },
       }),
     ],
