@@ -11,15 +11,16 @@
       このページは、書き出した収支計算書をsawaganiで再編集するためのものです。このページを提出する必要はありません。
     </p>
     <ul class="codes">
-      <li v-for="i in Math.floor(data.length / 500)" :key="i">
-        <QrcodeVue
+      <li v-for="i in Math.floor(data.length / 300)" :key="i">
+        <QrCode
           :value="
-            `sawagani ${i}/${Math.floor(data.length / 500)} ` +
-            data.substring(i * 500, (i + 1) * 500)
+            `swgn ${i}/${Math.floor(data.length / 300)} ` +
+            data.substring(i * 300, (i + 1) * 300)
           "
-          :size="175"
+          :size="100"
           level="L"
           render-as="svg"
+          :overlay="i.toString()"
         />
       </li>
     </ul>
@@ -27,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import QrcodeVue from 'qrcode.vue'
+import QrCode from './QrCode.vue'
 import { useDataStore } from '../store/data'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
@@ -43,7 +44,7 @@ const data = computed(() => toBase64(JSON.stringify(serialized.value)))
 .codes {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 40px;
   margin: 2rem 0;
   padding: 0;
 
