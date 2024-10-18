@@ -6,6 +6,7 @@
       <template #loading>クリップボードを読み取り中……</template>
       <template #completed>クリップボードからインポートしました</template>
     </ButtonWithState>
+    <button @click="isImporterOpen = true">ファイルからインポート</button>
     <button
       @click="
         confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
@@ -15,6 +16,10 @@
       リセット
     </button>
   </div>
+  <ImporterDialog
+    :is-open="isImporterOpen"
+    @on-close="isImporterOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
@@ -22,8 +27,12 @@ import { storeToRefs } from 'pinia'
 import { useDataStore } from '../store/data'
 import ButtonWithState from './ButtonWithState.vue'
 import IconSVG from '/icon.svg?url'
+import ImporterDialog from './ImporterDialog.vue'
+import { ref } from 'vue'
 
 const confirm = (...args) => window.confirm(...args)
+
+const isImporterOpen = ref(false)
 
 const dataStore = useDataStore()
 const { book } = storeToRefs(dataStore)

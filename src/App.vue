@@ -183,7 +183,6 @@
   <DocumentPage>
     <RestoreInfo />
   </DocumentPage>
-  <DragDropImporter />
 </template>
 
 <script setup lang="ts">
@@ -191,7 +190,6 @@ import DocumentPage from './components/DocumentPage.vue'
 import VColumns2 from './components/VColumns2.vue'
 import CategorySection from './components/CategorySection.vue'
 import SummaryContent from './components/SummaryContent.vue'
-import DragDropImporter from './components/DragDropImporter.vue'
 import ControlUI from './components/ControlUI.vue'
 import RestoreInfo from './components/RestoreInfo.vue'
 import { useDataStore } from './store/data'
