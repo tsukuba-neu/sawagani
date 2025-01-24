@@ -6,6 +6,7 @@
       <template #loading>クリップボードを読み取り中……</template>
       <template #completed>クリップボードからインポートしました</template>
     </ButtonWithState>
+    <button @click="importFromFile">ファイルからインポート</button>
     <button
       @click="
         confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
@@ -35,6 +36,19 @@ const importFromClipboard = async () => {
     .filter((line) => line.length > 0 && line.match(/\S/))
     .map((line) => line.split('\t'))
   book.value = b
+}
+
+const importFromFile = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (!input.files?.length) return
+
+  const file = input.files[0]
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const text = (e.target?.result as string) || ''
+    dataStore.importCSVString(text)
+  }
+  reader.readAsText(file)
 }
 </script>
 
