@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { Transaction, TransactionCategory } from '../types/transaction'
 import { replaceFullWidthWithHalfWidth } from '../lib/string'
-import { parse as parseCSV } from 'papaparse'
 
 /** 仕訳に応じて収支のセルの値を選択し返す
  *
@@ -173,11 +172,6 @@ export const useDataStore = defineStore('data', () => {
     )
   }
 
-  const importCSVString = (csvString: string) => {
-    const { data } = parseCSV<string[]>(csvString)
-    book.value = data
-  }
-
   return {
     /** 団体名 */
     orgName,
@@ -232,8 +226,5 @@ export const useDataStore = defineStore('data', () => {
 
     /** ストアを初期状態を戻す */
     reset,
-
-    /** CSV文字列をパースしてbookに設定する */
-    importCSVString,
   }
 })

@@ -5,8 +5,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '../store/data'
+import { storeToRefs } from 'pinia'
+import { parse as parseCSV } from 'papaparse'
 
 const dataStore = useDataStore()
+const { book } = storeToRefs(dataStore)
 
 const isDragging = ref(false)
 
@@ -24,7 +27,8 @@ const onDrop = (e: DragEvent) => {
     const reader = new FileReader()
     reader.addEventListener('load', (e) => {
       const text = e.target?.result as string
-      dataStore.importCSVString(text)
+      const { data } = parseCSV<string[]>(text)
+      book.value = data
     })
     reader.readAsText(files[0])
   }
