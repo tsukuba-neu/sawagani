@@ -46,7 +46,12 @@ const importFromFile = async (event: Event) => {
   const reader = new FileReader()
   reader.onload = (e) => {
     const text = (e.target?.result as string) || ''
-    dataStore.importCSVString(text)
+    try {
+      dataStore.importCSVString(text)
+    } catch (error) {
+      alert('ファイルを正しく読み取ることができませんでした。正しいファイルが選択されているか確認してください。');
+      console.error('Error importing CSV:', error)
+    }
   }
   reader.readAsText(file)
 }
