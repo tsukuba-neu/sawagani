@@ -5,10 +5,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '../store/data'
-import { storeToRefs } from 'pinia'
 
 const dataStore = useDataStore()
-const { book } = storeToRefs(dataStore)
 
 const isDragging = ref(false)
 
