@@ -6,7 +6,14 @@
       <template #loading>クリップボードを読み取り中……</template>
       <template #completed>クリップボードからインポートしました</template>
     </ButtonWithState>
-    <button @click="importFromFile">ファイルからインポート</button>
+    <button @click="filePickerInputRef.click()">ファイルからインポート</button>
+    <input
+      ref="file-picker-input"
+      type="file"
+      accept=".csv"
+      style="display: none"
+      @change="importFromFile"
+    />
     <button
       @click="
         confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
@@ -19,10 +26,13 @@
 </template>
 
 <script setup lang="ts">
+import { useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useDataStore } from '../store/data'
 import ButtonWithState from './ButtonWithState.vue'
 import IconSVG from '/icon.svg?url'
+
+const filePickerInputRef = useTemplateRef<HTMLInputElement>('file-picker-input')
 
 const confirm = (...args) => window.confirm(...args)
 
@@ -49,7 +59,9 @@ const importFromFile = async (event: Event) => {
     try {
       dataStore.importCSVString(text)
     } catch (error) {
-      alert('ファイルを正しく読み取ることができませんでした。正しいファイルが選択されているか確認してください。');
+      alert(
+        'ファイルを正しく読み取ることができませんでした。正しいファイルが選択されているか確認してください。',
+      )
       console.error('Error importing CSV:', error)
     }
   }
