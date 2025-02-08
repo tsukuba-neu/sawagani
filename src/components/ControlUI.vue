@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
+import { parse as parseCSV } from 'papaparse'
 import { useDataStore } from '../store/data'
 import ButtonWithState from './ButtonWithState.vue'
 import IconSVG from '/icon.svg?url'
@@ -41,11 +42,8 @@ const { book } = storeToRefs(dataStore)
 
 const importFromClipboard = async () => {
   const text = await navigator.clipboard.readText()
-  const b = text
-    .split('\n')
-    .filter((line) => line.length > 0 && line.match(/\S/))
-    .map((line) => line.split('\t'))
-  book.value = b
+  const { data } = parseCSV<string[]>(text)
+  book.value = data
 }
 
 const importFromFile = async (event: Event) => {
