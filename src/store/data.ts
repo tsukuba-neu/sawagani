@@ -118,12 +118,16 @@ export const useDataStore = defineStore('data', () => {
             row[header.indexOf('支出')],
           ),
         ),
-        receipt: replaceFullWidthWithHalfWidth(row[header.indexOf('領収書No')]),
+        receipt: replaceFullWidthWithHalfWidth(
+          row[header.indexOf('領収書No')] || '',
+        ),
         recipient: row[header.indexOf('謝礼相手先')],
         transportPurpose: row[header.indexOf('通信運搬用途')],
         printPurpose: row[header.indexOf('印刷目的')],
         owner: row[header.indexOf('用具所有者')],
-        numStay: replaceFullWidthWithHalfWidth(row[header.indexOf('延べ宿泊数')]),
+        numStay: replaceFullWidthWithHalfWidth(
+          row[header.indexOf('延べ宿泊数')] || '',
+        ),
       }
 
       result.push(transaction)
