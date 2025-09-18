@@ -43,7 +43,7 @@
               (t) => t.category === TransactionCategory.その他収入,
             )
           "
-          :sum-footer-rows="[, , { label: '①総収入', value: '¥' + 1000 }]"
+          :sum-footer-rows="[, , { label: '①総収入' }]"
         >
           <template #title>⑤その他</template>
           <template #footer> </template>

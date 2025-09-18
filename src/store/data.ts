@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { Transaction, TransactionCategory } from '../types/transaction'
 import packageJson from '../../package.json'
+import { replaceFullWidthWithHalfWidth } from '../lib/string'
+import { parse as parseCSV } from 'papaparse'
 
 /** 仕訳に応じて収支のセルの値を選択し返す
  *
@@ -117,12 +119,16 @@ export const useDataStore = defineStore('data', () => {
             row[header.indexOf('支出')],
           ),
         ),
-        receipt: row[header.indexOf('領収書No')],
+        receipt: replaceFullWidthWithHalfWidth(
+          row[header.indexOf('領収書No')] || '',
+        ),
         recipient: row[header.indexOf('謝礼相手先')],
         transportPurpose: row[header.indexOf('通信運搬用途')],
         printPurpose: row[header.indexOf('印刷目的')],
         owner: row[header.indexOf('用具所有者')],
-        numStay: row[header.indexOf('延べ宿泊数')],
+        numStay: replaceFullWidthWithHalfWidth(
+          row[header.indexOf('延べ宿泊数')] || '',
+        ),
       }
 
       result.push(transaction)
@@ -171,6 +177,11 @@ export const useDataStore = defineStore('data', () => {
     book.value = data.book.filter(
       (row) => row.length > 0 && row.some((cell) => cell.match(/\S/)),
     )
+  }
+
+  const importCSVString = (csvString: string) => {
+    const { data } = parseCSV<string[]>(csvString)
+    book.value = data
   }
 
   return {
@@ -227,5 +238,8 @@ export const useDataStore = defineStore('data', () => {
 
     /** ストアを初期状態を戻す */
     reset,
+
+    /** CSV文字列をパースしてbookに設定する */
+    importCSVString,
   }
 })
