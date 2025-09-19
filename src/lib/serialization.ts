@@ -1,7 +1,9 @@
 import JSONCrush from 'jsoncrush'
 import { fromBase64 } from './base64'
 
-export const serialize = (data: Parameters<typeof JSON.stringify>): string => {
+export const serialize = (
+  data: Parameters<typeof JSON.stringify>[0],
+): string => {
   const jsonString = JSON.stringify(data)
   return JSONCrush.crush(jsonString)
 }
