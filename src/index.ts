@@ -15,7 +15,7 @@ const dataStore = useDataStore()
 
 try {
   const serialized = deserialize<typeof dataStore.serialized>(
-    location.hash.slice(1),
+    decodeURIComponent(location.hash.slice(1)),
   )
   dataStore.parse(serialized)
 } catch (e) {
@@ -24,5 +24,5 @@ try {
 
 dataStore.$subscribe(() => {
   const serialized = serialize(dataStore.serialized)
-  history.replaceState(null, '', `#${serialized}`)
+  history.replaceState(null, '', `#${encodeURIComponent(serialized)}`)
 })
