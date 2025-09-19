@@ -7,6 +7,11 @@
   "keywords": [],
   "main": "index.html",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tsukuba-neu/sawagani.git"
+  },
+  "homepage": "https://github.com/tsukuba-neu/sawagani#readme",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --skipDefaultLibCheck --noEmit && vite build",
