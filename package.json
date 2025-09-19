@@ -31,7 +31,7 @@
     "@types/papaparse": "5.3.14",
     "@vite-pwa/assets-generator": "0.2.6",
     "@vitejs/plugin-vue": "5.1.4",
-    "eslint": "9.11.1",
+    "eslint": "9.35.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-vue": "9.28.0",
     "lint-staged": "15.2.10",
