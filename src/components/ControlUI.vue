@@ -1,6 +1,8 @@
 <template>
   <div class="control-ui">
-    <img :src="IconSVG" width="50" height="30" alt="" class="icon" />
+    <a :href="packageJson.homepage" target="_blank" rel="noopener noreferrer">
+      <img :src="IconSVG" width="50" height="30" alt="" class="icon" />
+    </a>
     <ButtonWithState :on-click="importFromClipboard" :time="1000">
       <template #default> クリップボードからインポート </template>
       <template #loading>クリップボードを読み取り中……</template>
@@ -32,6 +34,7 @@ import { parse as parseCSV } from 'papaparse'
 import { useDataStore } from '../store/data'
 import ButtonWithState from './ButtonWithState.vue'
 import IconSVG from '/icon.svg?url'
+import packageJson from '../../package.json'
 
 const filePickerInputRef = useTemplateRef<HTMLInputElement>('file-picker-input')
 
