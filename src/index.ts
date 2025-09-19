@@ -13,10 +13,15 @@ app.mount('#app')
 
 const dataStore = useDataStore()
 
+let hash
 try {
-  const serialized = deserialize<typeof dataStore.serialized>(
-    decodeURIComponent(location.hash.slice(1)),
-  )
+  hash = decodeURIComponent(location.hash.slice(1))
+} catch {
+  throw new Error('URL hashのデコードに失敗しました')
+}
+
+try {
+  const serialized = deserialize<typeof dataStore.serialized>(hash)
   dataStore.parse(serialized)
 } catch (e) {
   console.warn('URL hashのデータがparseできませんでした', e)
