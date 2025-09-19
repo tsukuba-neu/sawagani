@@ -3,7 +3,7 @@ import App from './App.vue'
 import './global.css'
 import { createPinia } from 'pinia'
 import { useDataStore } from './store/data'
-import { fromBase64, toBase64 } from './lib/base64'
+import { serialize, deserialize } from './lib/serialization'
 
 const pinia = createPinia()
 
@@ -14,13 +14,15 @@ app.mount('#app')
 const dataStore = useDataStore()
 
 try {
-  const serialized = JSON.parse(fromBase64(location.hash.slice(1)))
+  const serialized = deserialize<typeof dataStore.serialized>(
+    location.hash.slice(1),
+  )
   dataStore.parse(serialized)
 } catch (e) {
   console.warn('URL hashのデータがparseできませんでした', e)
 }
 
 dataStore.$subscribe(() => {
-  const serialized = toBase64(JSON.stringify(dataStore.serialized))
+  const serialized = serialize(dataStore.serialized)
   history.replaceState(null, '', `#${serialized}`)
 })
