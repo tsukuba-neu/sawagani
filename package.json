@@ -22,13 +22,13 @@
   "license": "MIT",
   "dependencies": {
     "jsoncrush": "1.1.8",
-    "papaparse": "5.4.1",
+    "papaparse": "5.5.3",
     "pinia": "2.3.1",
     "vue": "3.5.21"
   },
   "devDependencies": {
     "@types/node": "22.7.4",
-    "@types/papaparse": "5.3.14",
+    "@types/papaparse": "5.3.16",
     "@vite-pwa/assets-generator": "1.0.1",
     "@vitejs/plugin-vue": "6.0.1",
     "eslint": "9.36.0",
