@@ -3,6 +3,7 @@ import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import globals from 'globals'
 
 export default tseslint.config(
   {
@@ -10,13 +11,15 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  // @ts-expect-error https://github.com/vuejs/eslint-plugin-vue/issues/2555
   ...pluginVue.configs['flat/recommended'],
   {
     files: ['*.vue', '**/*.vue'],
     languageOptions: {
       parserOptions: {
         parser: '@typescript-eslint/parser',
+      },
+      globals: {
+        ...globals.browser,
       },
     },
   },
