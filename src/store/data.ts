@@ -138,7 +138,7 @@ export const useDataStore = defineStore('data', () => {
   })
 
   /** 状態データを保存するための出力関数 */
-  const serialize = () => ({
+  const toJSON = () => ({
     version: packageJson.version,
     orgName: orgName.value,
     title: title.value,
@@ -157,10 +157,10 @@ export const useDataStore = defineStore('data', () => {
   })
 
   /** 現在の状態の保存用オブジェクト */
-  const serialized = computed(serialize)
+  const serialized = computed(toJSON)
 
   /** 保存した状態を書き戻す */
-  const parse = (data: ReturnType<typeof serialize>) => {
+  const parse = (data: ReturnType<typeof toJSON>) => {
     orgName.value = data.orgName
     title.value = data.title
     advisorName.value = data.advisorName

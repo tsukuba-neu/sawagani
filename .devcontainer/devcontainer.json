@@ -1,0 +1,26 @@
+{
+  "name": "sawagani",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "features": {
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      // For node-canvas via pdf-img-convert
+      // https://github.com/Automattic/node-canvas
+      "packages": "build-essential,libcairo2-dev,libpango1.0-dev,libjpeg-dev,libgif-dev,librsvg2-dev"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "mounts": [
+    "target=${containerWorkspaceFolder}/node_modules,source=dev-steps-volume"
+  ],
+  "postCreateCommand": "sudo chown node node_modules && npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "Vue.volar"
+      ]
+    }
+  },
+  "remoteUser": "node"
+}

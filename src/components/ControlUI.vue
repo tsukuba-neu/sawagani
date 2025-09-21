@@ -1,6 +1,8 @@
 <template>
   <div class="control-ui">
-    <img :src="IconSVG" width="50" height="30" alt="" class="icon" />
+    <a :href="packageJson.homepage" target="_blank" rel="noopener noreferrer">
+      <img :src="IconSVG" width="50" height="30" alt="" class="icon" />
+    </a>
     <ButtonWithState :on-click="importFromClipboard" :time="1000">
       <template #default> クリップボードからインポート </template>
       <template #loading>クリップボードを読み取り中……</template>
@@ -10,7 +12,7 @@
     <button
       @click="
         confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
-          dataStore.reset()
+        dataStore.reset()
       "
     >
       リセット
@@ -30,6 +32,7 @@ import ButtonWithState from './ButtonWithState.vue'
 import IconSVG from '/icon.svg?url'
 import ImporterDialog from './ImporterDialog.vue'
 import { ref } from 'vue'
+import packageJson from '../../package.json'
 
 const confirm = (...args) => window.confirm(...args)
 
