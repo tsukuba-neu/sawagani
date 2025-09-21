@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/tsukuba-neu/sawagani#readme",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vue-tsc --skipDefaultLibCheck --noEmit && vite build",
     "lint": "eslint .",
     "prepare": "simple-git-hooks",

@@ -1,0 +1,17 @@
+{
+  "name": "sawagani",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "mounts": [
+    "target=${containerWorkspaceFolder}/node_modules,source=dev-steps-volume"
+  ],
+  "postCreateCommand": "sudo chown node node_modules && npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    }
+  },
+  "remoteUser": "node"
+}
