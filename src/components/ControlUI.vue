@@ -19,7 +19,7 @@
     <button
       @click="
         confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
-          dataStore.reset()
+        dataStore.reset()
       "
     >
       リセット
