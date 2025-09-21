@@ -10,7 +10,11 @@
   "postCreateCommand": "sudo chown node node_modules && npm install",
   "customizations": {
     "vscode": {
-      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "Vue.volar"
+      ]
     }
   },
   "remoteUser": "node"
