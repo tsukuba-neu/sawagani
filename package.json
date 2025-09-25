@@ -41,7 +41,7 @@
     "lint-staged": "16.1.6",
     "prettier": "3.6.2",
     "simple-git-hooks": "2.13.1",
-    "typescript-eslint": "8.44.0",
+    "typescript-eslint": "8.44.1",
     "vite": "7.1.7",
     "vite-plugin-pwa": "1.0.3",
     "vue-tsc": "3.0.7"
