@@ -5,7 +5,7 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "mounts": [
-    "type=volume,target=${containerWorkspaceFolder}/node_modules,src=dev-steps-volume"
+    "target=${containerWorkspaceFolder}/node_modules,source=dev-steps-volume"
   ],
   "postCreateCommand": "sudo chown node node_modules && npm install",
   "customizations": {
