@@ -11,13 +11,16 @@
       このページは、書き出した収支計算書をsawaganiで再編集するためのものです。このページを提出する必要はありません。
     </p>
     <ul class="codes">
-      <li v-for="i in Math.floor(data.length / 300)" :key="i">
+      <li v-for="i in Math.ceil(data.length / chunkSize)" :key="i">
         <QrCode
           :value="
-            `swgn ${i}/${Math.floor(data.length / 300)} ` +
-            data.substring(i * 300, (i + 1) * 300)
+            `swgn ${i}/${Math.ceil(data.length / chunkSize)} ` +
+            data.substring(
+              (i - 1) * chunkSize,
+              Math.min(i * chunkSize, data.length),
+            )
           "
-          :size="100"
+          :size="150"
           level="L"
           render-as="svg"
           :overlay="i.toString()"
@@ -32,12 +35,13 @@ import QrCode from './QrCode.vue'
 import { useDataStore } from '../store/data'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { toBase64 } from '../lib/base64'
+import { serialize } from '../lib/serialization'
 
+const chunkSize = 300
 const dataStore = useDataStore()
 const { serialized } = storeToRefs(dataStore)
 
-const data = computed(() => toBase64(JSON.stringify(serialized.value)))
+const data = computed(() => encodeURIComponent(serialize(serialized.value)))
 </script>
 
 <style scoped>
