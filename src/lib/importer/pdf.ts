@@ -81,7 +81,10 @@ export const importPDF = async (file: File) => {
             )
           }
         } else {
-          console.log('QRコードの内容は予期するものと異なります', result.data)
+          console.log(
+            'QRコードの内容は予期するものと異なりました。スキップします。',
+            result.data,
+          )
         }
 
         const allCodesDetected =
