@@ -45,6 +45,24 @@ export default defineConfig(({ mode }) => {
         pwaAssets: {
           image: 'public/icon.svg',
         },
+        workbox: {
+          globIgnores: ['**/*.wasm'],
+          runtimeCaching: [
+            {
+              // .wasm ファイルへのリクエストをこのルールで処理する
+              urlPattern: /.*\.wasm$/,
+              // まずキャッシュから応答し、同時に裏でネットワークから最新版を取得してキャッシュを更新する
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'wasm-assets',
+                expiration: {
+                  maxEntries: 30,
+                  maxAgeSeconds: 60 * 60 * 24 * 30, // 30日
+                },
+              },
+            },
+          ],
+        },
       }),
     ],
     build: {
