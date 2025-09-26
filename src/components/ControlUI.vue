@@ -34,7 +34,7 @@ import ImporterDialog from './ImporterDialog.vue'
 import { ref } from 'vue'
 import packageJson from '../../package.json'
 
-const confirm = (...args) => window.confirm(...args)
+const confirm = (...args: Parameters<typeof window.confirm>) => window.confirm(...args)
 
 const isImporterOpen = ref(false)
 
