@@ -8,7 +8,7 @@ export const importDataToStore = async (
 ) => {
   switch (file.type) {
     case 'application/pdf':
-      importPDF(file)
+      dataStore.parse(await importPDF(file))
       break
     case 'text/csv':
       dataStore.book = await importCSV(file)
