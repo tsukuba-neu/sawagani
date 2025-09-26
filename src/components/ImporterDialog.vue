@@ -146,16 +146,20 @@ const onDragLeave = (e: DragEvent) => {
 
 const dragArea = useTemplateRef('dragArea')
 onMounted(() => {
-  dragArea.value.addEventListener('dragover', onDragOver)
-  dragArea.value.addEventListener('drop', onDrop)
-  dragArea.value.addEventListener('dragleave', onDragLeave)
+  if (dragArea.value) {
+    dragArea.value.addEventListener('dragover', onDragOver)
+    dragArea.value.addEventListener('drop', onDrop)
+    dragArea.value.addEventListener('dragleave', onDragLeave)
+  }
 })
 
 onBeforeUnmount(() => {
-  dragArea.value.removeEventListener('dragover', onDragOver)
-  dragArea.value.removeEventListener('drop', onDrop)
-  dragArea.value.removeEventListener('dragleave', onDragLeave)
   dialog.value?.close()
+  if (dragArea.value) {
+    dragArea.value.removeEventListener('dragover', onDragOver)
+    dragArea.value.removeEventListener('drop', onDrop)
+    dragArea.value.removeEventListener('dragleave', onDragLeave)
+  }
 })
 </script>
 
