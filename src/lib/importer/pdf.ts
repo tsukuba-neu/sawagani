@@ -177,7 +177,7 @@ function getContentGrid(
  * @param data
  * @param bufferSize 縮小画像のサイズ
  * @param threshold 黒を検知する輝度の閾値
- * @param direction 捜査方向
+ * @param direction 走査方向
  * @returns
  */
 function getContentBandAreas(
@@ -201,7 +201,7 @@ function getContentBandAreas(
     prevHasBlack = false
 
   for (let i = 0; i < bufferSize; i++) {
-    /** 捜査中の列に黒が含まれるかどうか */
+    /** 走査中の列に黒が含まれるかどうか */
     let hasBlack = false
     for (let j = 0; j < bufferSize; j++) {
       let x: number, y: number
@@ -216,7 +216,7 @@ function getContentBandAreas(
           break
       }
 
-      // 捜査する列に黒があるかどうかを調べる
+      // 走査する列に黒があるかどうかを調べる
       // Note: OffscreenCanvasで縮小して計算すると、縮小後のピクセルは元のピクセルの平均値ではなく、間引きされた値になる。これを避けるため、平均輝度を求める関数は独自に実装したものを用いる
       const brightness = getBrightnessFromImageData(
         data,
@@ -225,7 +225,7 @@ function getContentBandAreas(
         chunkWidth,
         chunkHeight,
       )
-      // 1pxでも閾値以下の輝度があれば黒があるとみなし、この列の捜査を終了する
+      // 1pxでも閾値以下の輝度があれば黒があるとみなし、この列の走査を終了する
       if (brightness < threshold) {
         hasBlack = true
         break
@@ -241,7 +241,7 @@ function getContentBandAreas(
           次に追加する領域の終了位置はここまで出現した白の領域の中央に、開始位置はひとつ前の境界位置となる
           ⚪️⚪️⚪️⚫️⚫️⚫️⚪️⚪️⚪️⚫️
             ↑         ↑  ↑
-            |         |  捜査中の位置
+            |         |  走査中の位置
             |         領域の終了位置
             領域の開始位置（=直前の領域の終了位置）
         */
