@@ -1,8 +1,27 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { Transaction, TransactionCategory } from '../types/transaction'
+import packageJson from '../../package.json'
 import { replaceFullWidthWithHalfWidth } from '../lib/string'
 import { parse as parseCSV } from 'papaparse'
+
+export type SerializedData = {
+  version: string
+  orgName: string
+  title: string
+  advisorName: string
+  representativeName: string
+  accountantName: string
+  orgComment: string
+  cashAmount: number
+  postalSavingsAmount: number
+  bank1Amount: number
+  bank1Name: string
+  bank2Amount: number
+  bank2Name: string
+  otherAmount: number
+  book: string[][]
+}
 
 /** 仕訳に応じて収支のセルの値を選択し返す
  *
@@ -137,7 +156,8 @@ export const useDataStore = defineStore('data', () => {
   })
 
   /** 状態データを保存するための出力関数 */
-  const toJSON = () => ({
+  const toJSON = (): SerializedData => ({
+    version: packageJson.version,
     orgName: orgName.value,
     title: title.value,
     advisorName: advisorName.value,
@@ -158,7 +178,7 @@ export const useDataStore = defineStore('data', () => {
   const serialized = computed(toJSON)
 
   /** 保存した状態を書き戻す */
-  const parse = (data: ReturnType<typeof toJSON>) => {
+  const parse = (data: SerializedData) => {
     orgName.value = data.orgName
     title.value = data.title
     advisorName.value = data.advisorName

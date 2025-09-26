@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './global.css'
 import { createPinia } from 'pinia'
-import { useDataStore } from './store/data'
+import { SerializedData, useDataStore } from './store/data'
 import { serialize, deserialize } from './lib/serialization'
 
 const pinia = createPinia()
@@ -21,7 +21,7 @@ try {
 }
 
 try {
-  const serialized = deserialize<typeof dataStore.serialized>(hash)
+  const serialized = deserialize<SerializedData>(hash)
   dataStore.parse(serialized)
 } catch (e) {
   console.warn('URL hashのデータがparseできませんでした', e)
