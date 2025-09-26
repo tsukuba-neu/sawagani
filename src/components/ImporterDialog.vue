@@ -9,11 +9,7 @@
       >
         <div class="eyecatch">
           ファイルをドロップ または
-          <input
-            type="button"
-            value="選択"
-            @click="($refs.fileInput as HTMLInputElement)?.click()"
-          />
+          <input type="button" value="選択" @click="fileInput?.click()" />
           <input
             ref="fileInput"
             type="file"
