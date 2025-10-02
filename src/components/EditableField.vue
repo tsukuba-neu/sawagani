@@ -3,7 +3,7 @@
     <textarea
       v-if="props.multiline"
       ref="input"
-      v-model="model"
+      v-model.lazy="model"
       class="text"
       :class="{ 'allow-overflow': props.allowOverflow }"
       :placeholder="props.placeholder"
@@ -21,7 +21,7 @@
       :value="model"
       :placeholder="props.placeholder"
       :required
-      @input="
+      @change="
         model =
           type === 'number'
             ? +($event.target as HTMLInputElement).value
