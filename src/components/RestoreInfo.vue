@@ -35,13 +35,12 @@ import QrCode from './QrCode.vue'
 import { useDataStore } from '../store/data'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { serialize } from '../lib/serialization'
 
 const chunkSize = 300
 const dataStore = useDataStore()
-const { serialized } = storeToRefs(dataStore)
+const { serializedString } = storeToRefs(dataStore)
 
-const data = computed(() => encodeURIComponent(serialize(serialized.value)))
+const data = computed(() => encodeURIComponent(serializedString.value))
 </script>
 
 <style scoped>

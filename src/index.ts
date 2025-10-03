@@ -3,7 +3,7 @@ import App from './App.vue'
 import './global.css'
 import { createPinia } from 'pinia'
 import { SerializedData, useDataStore } from './store/data'
-import { serialize, deserialize } from './lib/serialization'
+import { deserialize } from './lib/serialization'
 
 const pinia = createPinia()
 
@@ -30,6 +30,6 @@ if (hash) {
 }
 
 dataStore.$subscribe(() => {
-  const serialized = serialize(dataStore.serialized)
+  const serialized = dataStore.serializedString
   history.replaceState(null, '', `#${encodeURIComponent(serialized)}`)
 })
