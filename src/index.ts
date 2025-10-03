@@ -20,7 +20,7 @@ try {
   throw new Error('URL hashのデコードに失敗しました')
 }
 
-if (hash !== '') {
+if (hash) {
   try {
     const serialized = deserialize<SerializedData>(hash)
     dataStore.parse(serialized)
