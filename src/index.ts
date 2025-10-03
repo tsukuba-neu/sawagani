@@ -20,11 +20,13 @@ try {
   throw new Error('URL hashのデコードに失敗しました')
 }
 
-try {
-  const serialized = deserialize<SerializedData>(hash)
-  dataStore.parse(serialized)
-} catch (e) {
-  console.warn('URL hashのデータがparseできませんでした', e)
+if (hash) {
+  try {
+    const serialized = deserialize<SerializedData>(hash)
+    dataStore.parse(serialized)
+  } catch (e) {
+    console.warn('URL hashのデータがparseできませんでした', e)
+  }
 }
 
 dataStore.$subscribe(() => {
