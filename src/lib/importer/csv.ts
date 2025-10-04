@@ -1,4 +1,5 @@
 import { parse as parseCSV } from 'papaparse'
+import { removeTrailingEmptyRows } from '../array'
 
 export const importCSV = async (file: File): Promise<string[][]> =>
   new Promise((resolve) => {
@@ -6,7 +7,7 @@ export const importCSV = async (file: File): Promise<string[][]> =>
     reader.addEventListener('load', (e) => {
       const text = e.target?.result as string
       const { data } = parseCSV<string[]>(text)
-      resolve(data)
+      resolve(removeTrailingEmptyRows(data))
     })
     reader.readAsText(file)
   })
