@@ -33,8 +33,10 @@ import IconSVG from '/icon.svg?url'
 import ImporterDialog from './ImporterDialog.vue'
 import { ref } from 'vue'
 import packageJson from '../../package.json'
+import { removeTrailingEmptyRows } from '../lib/array'
 
-const confirm = (...args: Parameters<typeof window.confirm>) => window.confirm(...args)
+const confirm = (...args: Parameters<typeof window.confirm>) =>
+  window.confirm(...args)
 
 const isImporterOpen = ref(false)
 
@@ -44,7 +46,7 @@ const { book } = storeToRefs(dataStore)
 const importFromClipboard = async () => {
   const text = await navigator.clipboard.readText()
   const { data } = parseCSV<string[]>(text)
-  book.value = data
+  book.value = removeTrailingEmptyRows(data)
 }
 </script>
 

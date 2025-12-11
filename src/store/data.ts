@@ -5,6 +5,7 @@ import packageJson from '../../package.json'
 import { replaceFullWidthWithHalfWidth } from '../lib/string'
 import { parse as parseCSV } from 'papaparse'
 import { serialize } from '../lib/serialization'
+import { removeTrailingEmptyRows } from '../lib/array'
 
 export type SerializedData = {
   version: string
@@ -203,7 +204,7 @@ export const useDataStore = defineStore('data', () => {
 
   const importCSVString = (csvString: string) => {
     const { data } = parseCSV<string[]>(csvString)
-    book.value = data
+    book.value = removeTrailingEmptyRows(data)
   }
 
   return {
