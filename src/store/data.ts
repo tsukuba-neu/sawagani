@@ -4,6 +4,7 @@ import { Transaction, TransactionCategory } from '../types/transaction'
 import packageJson from '../../package.json'
 import { replaceFullWidthWithHalfWidth } from '../lib/string'
 import { parse as parseCSV } from 'papaparse'
+import { serialize } from '../lib/serialization'
 import { removeTrailingEmptyRows } from '../lib/array'
 
 export type SerializedData = {
@@ -178,6 +179,9 @@ export const useDataStore = defineStore('data', () => {
   /** 現在の状態の保存用オブジェクト */
   const serialized = computed(toJSON)
 
+  /** シリアライズ済み文字列（キャッシュ用） */
+  const serializedString = computed(() => serialize(serialized.value))
+
   /** 保存した状態を書き戻す */
   const parse = (data: SerializedData) => {
     orgName.value = data.orgName
@@ -251,6 +255,9 @@ export const useDataStore = defineStore('data', () => {
 
     /** 状態を保存するためのオブジェクト */
     serialized,
+
+    /** シリアライズ済み文字列（キャッシュ用） */
+    serializedString,
 
     /** 保存した状態を書き戻す */
     parse,
