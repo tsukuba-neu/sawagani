@@ -31,7 +31,8 @@ jobs:
 
       - run: npm run build
         env:
-          VITE_BASE: /sawagani
+          VITE_ORIGIN: https://tsukuba-neu.github.io
+          VITE_BASE: /sawagani/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
