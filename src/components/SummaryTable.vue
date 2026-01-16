@@ -314,7 +314,7 @@
       class="border centered-v table-cell-pad"
       style="grid-row: 23; grid-column: 2"
     >
-      <span>
+      <span class="text-and-field">
         預金（<EditableField
           v-model="bank1Name"
           placeholder="サンプル銀行"
@@ -338,7 +338,7 @@
       class="border centered-v table-cell-pad"
       style="grid-row: 24; grid-column: 2"
     >
-      <span>
+      <span class="text-and-field">
         預金（<EditableField
           v-model="bank2Name"
           placeholder="サンプル銀行"
@@ -448,5 +448,12 @@ const isCarryOverMatch = computed(() => {
   display: grid;
   grid-template-columns: 20pt auto repeat(2, calc(var(--num-place-width) * 9));
   grid-template-rows: repeat(25, 28pt);
+}
+
+.text-and-field {
+  display: flex;
+  white-space: nowrap;
+  width: 100%;
+  height: 1em;
 }
 </style>
