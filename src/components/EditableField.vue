@@ -83,14 +83,20 @@ onMounted(() => {
 input,
 textarea {
   position: relative;
-  -webkit-appearance: textfield;
-  -moz-appearance: textfield;
-  appearance: textfield;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   border: none;
   font-size: 1em;
   background-color: transparent;
   width: 100%;
   height: 100%;
+
+  &[type='number'] {
+    -webkit-appearance: textarea;
+    -moz-appearance: textarea;
+    appearance: textarea;
+  }
 
   &.allow-overflow {
     field-sizing: content;
