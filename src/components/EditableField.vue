@@ -83,9 +83,9 @@ onMounted(() => {
 input,
 textarea {
   position: relative;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
   border: none;
   font-size: 1em;
   background-color: transparent;
