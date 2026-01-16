@@ -18,7 +18,7 @@
           required
         />
       </div>
-      <div>
+      <div class="submission-date">
         <span class="spacer spacer--4"></span>年<span
           class="spacer spacer--2"
         ></span
@@ -112,8 +112,8 @@ const {
 .var-field {
   display: inline-flex;
   border-bottom: 1px solid;
-  min-width: 20em;
   margin: 0 1em 0 0;
+  flex: 1 1 auto;
 
   * {
     flex: 1 1 auto;
@@ -122,6 +122,10 @@ const {
   label {
     flex: 0 0 auto;
   }
+}
+
+.submission-date {
+  white-space: nowrap;
 }
 
 .flex-root {
