@@ -168,6 +168,7 @@ textarea {
       background-color: #eef;
       border-radius: 3px;
       font-family: var(--font-family-sans);
+      resize: none;
 
       &:focus {
         outline: 2px solid #06f;
