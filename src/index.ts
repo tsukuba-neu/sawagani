@@ -4,6 +4,7 @@ import './global.css'
 import { createPinia } from 'pinia'
 import { SerializedData, useDataStore } from './store/data'
 import { deserialize } from './lib/serialization'
+import pkg from '../package.json'
 
 const pinia = createPinia()
 
@@ -32,4 +33,8 @@ if (hash) {
 dataStore.$subscribe(() => {
   const serialized = dataStore.serializedString
   history.replaceState(null, '', `#${encodeURIComponent(serialized)}`)
+
+  document.title = dataStore.title
+    ? `${dataStore.title} - ${pkg.name}`
+    : `${pkg.name}`
 })
