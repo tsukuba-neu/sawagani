@@ -25,6 +25,7 @@ if (hash) {
   try {
     const serialized = deserialize<SerializedData>(hash)
     dataStore.parse(serialized)
+    updateDocumentTitle()
   } catch (e) {
     console.warn('URL hashのデータがparseできませんでした', e)
   }
@@ -33,8 +34,11 @@ if (hash) {
 dataStore.$subscribe(() => {
   const serialized = dataStore.serializedString
   history.replaceState(null, '', `#${encodeURIComponent(serialized)}`)
+  updateDocumentTitle()
+})
 
+function updateDocumentTitle() {
   document.title = dataStore.title
     ? `${dataStore.title} - ${pkg.name}`
     : `${pkg.name}`
-})
+}
