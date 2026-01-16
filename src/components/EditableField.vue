@@ -92,6 +92,12 @@ textarea {
   width: 100%;
   height: 100%;
 
+  &[type='number'] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
   &.allow-overflow {
     field-sizing: content;
   }
