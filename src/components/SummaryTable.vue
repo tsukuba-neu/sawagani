@@ -447,7 +447,7 @@ const isCarryOverMatch = computed(() => {
 .summary-table {
   display: grid;
   grid-template-columns: 20pt auto repeat(2, calc(var(--num-place-width) * 9));
-  grid-template-rows: repeat(25, 28pt);
+  grid-template-rows: repeat(25, 26.5pt);
 }
 
 .text-and-field {

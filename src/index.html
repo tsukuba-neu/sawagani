@@ -15,6 +15,7 @@
     <style>
       @page {
         size: A4 portrait;
+        margin: 0 !important;
       }
 
       * {
@@ -22,6 +23,7 @@
       }
 
       :root {
+        --page-margin: 10mm;
         font-family: var(--font-family-serif);
         font-size: 10pt;
         line-height: 10pt;
@@ -38,7 +40,7 @@
       html,
       body,
       #app {
-        width: 100%;
+        width: 210mm;
         height: 100%;
         margin: 0;
       }
