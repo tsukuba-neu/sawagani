@@ -6,6 +6,7 @@ import { replaceFullWidthWithHalfWidth } from '../lib/string'
 import { parse as parseCSV } from 'papaparse'
 import { serialize } from '../lib/serialization'
 import { removeTrailingEmptyRows } from '../lib/array'
+import { lint, Problem } from '../lib/lint'
 
 export type SerializedData = {
   version: string
@@ -157,6 +158,8 @@ export const useDataStore = defineStore('data', () => {
     return result
   })
 
+  const problems = computed<Problem[]>(() => lint(transactions.value))
+
   /** 状態データを保存するための出力関数 */
   const toJSON = (): SerializedData => ({
     version: packageJson.version,
@@ -252,6 +255,9 @@ export const useDataStore = defineStore('data', () => {
 
     /** 仕訳済みの取引データ配列 */
     transactions,
+
+    /** トランザクションに対するバリデーション問題一覧 */
+    problems,
 
     /** 状態を保存するためのオブジェクト */
     serialized,
