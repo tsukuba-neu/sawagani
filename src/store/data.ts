@@ -5,7 +5,7 @@ import packageJson from '../../package.json'
 import { parse as parseCSV } from 'papaparse'
 import { serialize } from '../lib/serialization'
 import { removeTrailingEmptyRows } from '../lib/array'
-import { createCellGetter, parseRow } from '../lib/book'
+import { createCellGetter, isEmptyRow, parseRow } from '../lib/book'
 import { lint, Problem } from '../lib/lint'
 
 export type SerializedData = {
@@ -70,6 +70,10 @@ export const useDataStore = defineStore('data', () => {
     const get = createCellGetter(book.value[0])
 
     for (const row of book.value.slice(1)) {
+      if (isEmptyRow(row)) {
+        continue
+      }
+
       const transaction = parseRow(get, row)
 
       if (!transaction) {
@@ -125,9 +129,8 @@ export const useDataStore = defineStore('data', () => {
     bank2Amount.value = +data.bank2Amount
     bank2Name.value = data.bank2Name
     otherAmount.value = +data.otherAmount
-    book.value = data.book.filter(
-      (row) => row.length > 0 && row.some((cell) => cell.match(/\S/)),
-    )
+    // 行番号が帳簿と一致するよう、途中の空行は残す
+    book.value = removeTrailingEmptyRows(data.book)
   }
 
   const importCSVString = (csvString: string) => {
