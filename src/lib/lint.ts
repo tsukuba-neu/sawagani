@@ -150,15 +150,6 @@ const rowRules: RowRule[] = [
       : null
   },
 
-  // 支出は領収書Noが印字されるため必須
-  (r) =>
-    r.category !== null &&
-    r.category !== TransactionCategory.遠征総支出 &&
-    EGRESS_CATEGORIES.includes(r.category) &&
-    isBlank(r.get('領収書No'))
-      ? { severity: 'error', message: '領収書Noが記入されていません' }
-      : null,
-
   // 仕訳ごとに印字される欄は必須
   ...CATEGORY_COLUMNS.map(
     ({ category, column, label }): RowRule =>
@@ -195,6 +186,15 @@ const rowRules: RowRule[] = [
       ? { severity: 'warning', message: `${column}の金額が0以下です` }
       : null
   },
+
+  // 支出の領収書Noは印字されるが、領収書の紛失や会計間の繰入などで無い場合もある
+  (r) =>
+    r.category !== null &&
+    r.category !== TransactionCategory.遠征総支出 &&
+    EGRESS_CATEGORIES.includes(r.category) &&
+    isBlank(r.get('領収書No'))
+      ? { severity: 'warning', message: '領収書Noが記入されていません' }
+      : null,
 
   // 延べ宿泊数は正の整数
   (r) => {
