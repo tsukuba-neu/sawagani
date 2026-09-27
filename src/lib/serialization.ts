@@ -18,7 +18,9 @@ export const deserialize = <T>(serialized: string): T => {
       return JSON.parse(jsonString)
     } catch (fallbackError) {
       console.error('逆シリアライズに失敗しました', e, fallbackError)
-      throw new Error('逆シリアライズできないデータが渡されました')
+      throw new Error('逆シリアライズできないデータが渡されました', {
+        cause: fallbackError,
+      })
     }
   }
 }
