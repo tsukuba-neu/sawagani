@@ -100,11 +100,11 @@ watchEffect(() => {
 const dataStore = useDataStore()
 const isDragging = ref(false)
 
-const loadFiles = async (files: FileList) => {
+const loadFiles = async (files: FileList | null | undefined) => {
   state.value = 'loading'
   errors.value = []
   try {
-    if (files?.length > 0) {
+    if (files && files.length > 0) {
       const file = files[0]
       await importDataToStore(file, dataStore)
     }

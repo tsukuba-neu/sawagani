@@ -137,7 +137,7 @@ export const useDataStore = defineStore('data', () => {
             category,
             row[header.indexOf('収入')],
             row[header.indexOf('支出')],
-          ),
+          )!,
         ),
         receipt: replaceFullWidthWithHalfWidth(
           row[header.indexOf('領収書No')] || '',
