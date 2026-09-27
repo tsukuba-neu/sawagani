@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { Transaction, TransactionCategory } from '../types/transaction'
+import { Transaction } from '../types/transaction'
 import packageJson from '../../package.json'
-import { replaceFullWidthWithHalfWidth } from '../lib/string'
 import { parse as parseCSV } from 'papaparse'
 import { serialize } from '../lib/serialization'
 import { removeTrailingEmptyRows } from '../lib/array'
+import { createCellGetter, isEmptyRow, parseRow } from '../lib/book'
+import { lint, Problem } from '../lib/lint'
 
 export type SerializedData = {
   version: string
@@ -24,54 +25,6 @@ export type SerializedData = {
   otherAmount: number
   book: string[][]
 }
-
-/** 仕訳に応じて収支のセルの値を選択し返す
- *
- * @param category 仕訳
- * @param ingressAmountStr 収入セルの値
- * @param egressAmountStr 支出セルの値
- */
-const selectAmount = (
-  category: TransactionCategory,
-  ingressAmountStr: string,
-  egressAmountStr: string,
-) => {
-  if (
-    [
-      TransactionCategory.繰越金,
-      TransactionCategory.内部収入,
-      TransactionCategory.外部収入,
-      TransactionCategory.その他収入,
-    ].includes(category)
-  ) {
-    return ingressAmountStr
-  } else if (
-    [
-      TransactionCategory.大会参加連盟加盟費,
-      TransactionCategory.施設機材使用料,
-      TransactionCategory.謝礼費,
-      TransactionCategory.通信運搬費,
-      TransactionCategory.印刷製本費,
-      TransactionCategory.用具等購入費,
-      TransactionCategory.書籍費,
-      TransactionCategory.その他支出,
-      TransactionCategory.遠征総支出,
-      TransactionCategory.宿泊費,
-      TransactionCategory.交通費,
-    ].includes(category)
-  ) {
-    return egressAmountStr
-  }
-
-  return null
-}
-
-/** 文字列の戦闘・末尾の空白文字を削除する */
-const chomp = (str: string) => str.replace(/^\s+|\s+$/g, '')
-
-/** 文字列を数値に変換する。¥記号やカンマ区切りにも対応する */
-const toNumber = (str: string) =>
-  +chomp(str).replace(/^¥\s*/, '').replace(/,/g, '')
 
 export const useDataStore = defineStore('data', () => {
   const orgName = ref('')
@@ -114,41 +67,18 @@ export const useDataStore = defineStore('data', () => {
 
     const result: Transaction[] = []
 
-    const header: string[] = book.value.slice(0, 1)[0].map(chomp)
-    const rows = book.value.slice(1)
+    const get = createCellGetter(book.value[0])
 
-    for (const row of rows) {
-      const category =
-        TransactionCategory[
-          row[header.indexOf('仕訳')] as keyof typeof TransactionCategory
-        ]
-
-      if (!category) {
-        console.error('Invalid category:', row[header.indexOf('仕訳')], row)
+    for (const row of book.value.slice(1)) {
+      if (isEmptyRow(row)) {
         continue
       }
 
-      const transaction: Transaction = {
-        category,
-        date: row[header.indexOf('日付')],
-        description: row[header.indexOf('内容')],
-        amount: toNumber(
-          selectAmount(
-            category,
-            row[header.indexOf('収入')],
-            row[header.indexOf('支出')],
-          )!,
-        ),
-        receipt: replaceFullWidthWithHalfWidth(
-          row[header.indexOf('領収書No')] || '',
-        ),
-        recipient: row[header.indexOf('謝礼相手先')],
-        transportPurpose: row[header.indexOf('通信運搬用途')],
-        printPurpose: row[header.indexOf('印刷目的')],
-        owner: row[header.indexOf('用具所有者')],
-        numStay: replaceFullWidthWithHalfWidth(
-          row[header.indexOf('延べ宿泊数')] || '',
-        ),
+      const transaction = parseRow(get, row)
+
+      if (!transaction) {
+        console.error('Invalid category:', get(row, '仕訳'), row)
+        continue
       }
 
       result.push(transaction)
@@ -156,6 +86,8 @@ export const useDataStore = defineStore('data', () => {
 
     return result
   })
+
+  const problems = computed<Problem[]>(() => lint(book.value))
 
   /** 状態データを保存するための出力関数 */
   const toJSON = (): SerializedData => ({
@@ -197,9 +129,8 @@ export const useDataStore = defineStore('data', () => {
     bank2Amount.value = +data.bank2Amount
     bank2Name.value = data.bank2Name
     otherAmount.value = +data.otherAmount
-    book.value = data.book.filter(
-      (row) => row.length > 0 && row.some((cell) => cell.match(/\S/)),
-    )
+    // 行番号が帳簿と一致するよう、途中の空行は残す
+    book.value = removeTrailingEmptyRows(data.book)
   }
 
   const importCSVString = (csvString: string) => {
@@ -252,6 +183,9 @@ export const useDataStore = defineStore('data', () => {
 
     /** 仕訳済みの取引データ配列 */
     transactions,
+
+    /** 帳簿に対するバリデーションの問題一覧 */
+    problems,
 
     /** 状態を保存するためのオブジェクト */
     serialized,

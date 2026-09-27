@@ -1,5 +1,6 @@
 <template>
   <ControlUI />
+  <ProblemsPanel />
   <DocumentPage>
     <SummaryContent />
   </DocumentPage>
@@ -192,6 +193,7 @@ import CategorySection from './components/CategorySection.vue'
 import SummaryContent from './components/SummaryContent.vue'
 import ControlUI from './components/ControlUI.vue'
 import RestoreInfo from './components/RestoreInfo.vue'
+import ProblemsPanel from './components/ProblemsPanel.vue'
 import { useDataStore } from './store/data'
 import { TransactionCategory } from './types/transaction'
 import { storeToRefs } from 'pinia'
