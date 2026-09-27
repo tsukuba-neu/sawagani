@@ -23,9 +23,7 @@
         }}</span>
         <span class="problem-message">{{ problem.message }}</span>
         <span class="problem-context">{{ problem.context }}</span>
-        <span v-if="problem.row !== null" class="problem-row">
-          {{ problem.row }}行目
-        </span>
+        <span class="problem-row"> {{ problem.row }}行目 </span>
       </li>
     </ul>
   </div>

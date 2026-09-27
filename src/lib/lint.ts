@@ -1,13 +1,23 @@
 import { TransactionCategory } from '../types/transaction'
-import { BookColumn, createCellGetter, isEmptyRow, parseCategory } from './book'
+import {
+  BOOK_COLUMNS,
+  BookColumn,
+  chomp,
+  createCellGetter,
+  EGRESS_CATEGORIES,
+  INGRESS_CATEGORIES,
+  isEmptyRow,
+  parseCategory,
+  toNumber,
+} from './book'
 
 export type ProblemSeverity = 'error' | 'warning'
 
 export type Problem = {
   severity: ProblemSeverity
   message: string
-  /** 帳簿上の行番号（見出し行を1行目とする）。帳簿全体に対する問題の場合はnull */
-  row: number | null
+  /** 帳簿上の行番号（見出し行を1行目とする） */
+  row: number
   /** 問題のある行を識別するための日付・内容 */
   context: string
 }
@@ -63,7 +73,82 @@ const CATEGORY_COLUMNS: {
   },
 ]
 
+/** 仕訳に応じて金額を記入すべき列 */
+const amountColumnOf = (category: TransactionCategory): BookColumn | null =>
+  INGRESS_CATEGORIES.includes(category)
+    ? '収入'
+    : EGRESS_CATEGORIES.includes(category)
+      ? '支出'
+      : null
+
 const rowRules: RowRule[] = [
+  // 仕訳は必須
+  (r) =>
+    isBlank(r.get('仕訳'))
+      ? { severity: 'error', message: '仕訳が記入されていません' }
+      : null,
+
+  // 仕訳は定義されたものに限る（不正な行は収支計算書に出力されない）
+  (r) =>
+    !isBlank(r.get('仕訳')) && r.category === null
+      ? {
+          severity: 'error',
+          message: `仕訳「${chomp(r.get('仕訳'))}」は存在しません`,
+        }
+      : null,
+
+  // 遠征総支出は宿泊費・交通費の合計であり、直接使用すると収支計算書に出力されない
+  (r) =>
+    r.category === TransactionCategory.遠征総支出
+      ? {
+          severity: 'error',
+          message:
+            '遠征総支出は仕訳に使用できません。宿泊費または交通費を使用してください',
+        }
+      : null,
+
+  // 日付は必須
+  (r) =>
+    isBlank(r.get('日付'))
+      ? { severity: 'error', message: '日付が記入されていません' }
+      : null,
+
+  // 内容は必須
+  (r) =>
+    isBlank(r.get('内容'))
+      ? { severity: 'error', message: '内容が記入されていません' }
+      : null,
+
+  // 仕訳に応じた列の金額は必須
+  (r) => {
+    const column = r.category === null ? null : amountColumnOf(r.category)
+    return column && isBlank(r.get(column))
+      ? { severity: 'error', message: `${column}の金額が記入されていません` }
+      : null
+  },
+
+  // 仕訳に応じた列の金額は数値として解釈できる必要がある
+  (r) => {
+    const column = r.category === null ? null : amountColumnOf(r.category)
+    return column &&
+      !isBlank(r.get(column)) &&
+      !Number.isFinite(toNumber(r.get(column)))
+      ? {
+          severity: 'error',
+          message: `${column}の金額「${chomp(r.get(column))}」を数値として解釈できません`,
+        }
+      : null
+  },
+
+  // 支出は領収書Noが印字されるため必須
+  (r) =>
+    r.category !== null &&
+    r.category !== TransactionCategory.遠征総支出 &&
+    EGRESS_CATEGORIES.includes(r.category) &&
+    isBlank(r.get('領収書No'))
+      ? { severity: 'error', message: '領収書Noが記入されていません' }
+      : null,
+
   // 仕訳ごとに印字される欄は必須
   ...CATEGORY_COLUMNS.map(
     ({ category, column, label }): RowRule =>
@@ -83,7 +168,20 @@ export const lint = (book: string[][]): Problem[] => {
     return []
   }
 
-  const getCell = createCellGetter(book[0])
+  const header = book[0].map(chomp)
+
+  // 見出し行が不正な場合は各行を正しく解釈できないため、見出し行の問題のみを返す
+  const missingColumns = BOOK_COLUMNS.filter((c) => !header.includes(c))
+  if (missingColumns.length > 0) {
+    return missingColumns.map((column) => ({
+      severity: 'error',
+      message: `見出し行に「${column}」の列がありません`,
+      row: 1,
+      context: '',
+    }))
+  }
+
+  const getCell = createCellGetter(header)
   // 空行は読み飛ばす
   const rows = book.slice(1).flatMap((cells, i): LintRow[] =>
     isEmptyRow(cells)
