@@ -87,7 +87,7 @@ export const useDataStore = defineStore('data', () => {
     return result
   })
 
-  const problems = computed<Problem[]>(() => lint(transactions.value))
+  const problems = computed<Problem[]>(() => lint(book.value))
 
   /** 状態データを保存するための出力関数 */
   const toJSON = (): SerializedData => ({
@@ -184,7 +184,7 @@ export const useDataStore = defineStore('data', () => {
     /** 仕訳済みの取引データ配列 */
     transactions,
 
-    /** トランザクションに対するバリデーション問題一覧 */
+    /** 帳簿に対するバリデーションの問題一覧 */
     problems,
 
     /** 状態を保存するためのオブジェクト */

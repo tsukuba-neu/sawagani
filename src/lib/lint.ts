@@ -1,73 +1,113 @@
-import { Transaction, TransactionCategory } from '../types/transaction'
+import { TransactionCategory } from '../types/transaction'
+import { BookColumn, createCellGetter, isEmptyRow, parseCategory } from './book'
 
 export type ProblemSeverity = 'error' | 'warning'
 
 export type Problem = {
   severity: ProblemSeverity
   message: string
-  transaction: Transaction
+  /** 帳簿上の行番号（見出し行を1行目とする）。帳簿全体に対する問題の場合はnull */
+  row: number | null
+  /** 問題のある行を識別するための日付・内容 */
+  context: string
 }
 
-type LintRule = (transaction: Transaction) => Problem | null
+/** ルールに渡される帳簿の行 */
+type LintRow = {
+  /** 帳簿上の行番号（見出し行を1行目とする） */
+  row: number
+  /** 列名でセルの値を取得する。列が無い場合は空文字列を返す */
+  get: (column: BookColumn) => string
+  /** 仕訳。不正な場合はnull */
+  category: TransactionCategory | null
+}
 
-const rules: LintRule[] = [
-  // 謝礼費: 相手先 (recipient) は必須
-  (t) =>
-    t.category === TransactionCategory.謝礼費 && !t.recipient?.trim()
-      ? {
-          severity: 'error',
-          message: '謝礼費の相手先が記入されていません',
-          transaction: t,
-        }
-      : null,
+type Diagnostic = Pick<Problem, 'severity' | 'message'>
 
-  // 用具等購入費: 所有者 (owner) は必須
-  (t) =>
-    t.category === TransactionCategory.用具等購入費 && !t.owner?.trim()
-      ? {
-          severity: 'error',
-          message: '用具等購入費の所有者が記入されていません',
-          transaction: t,
-        }
-      : null,
+/** 帳簿の1行に対するルール */
+type RowRule = (row: LintRow) => Diagnostic | null
 
-  // 通信運搬費: 用途 (transportPurpose) は必須
-  (t) =>
-    t.category === TransactionCategory.通信運搬費 && !t.transportPurpose?.trim()
-      ? {
-          severity: 'warning',
-          message: '通信運搬費の用途が記入されていません',
-          transaction: t,
-        }
-      : null,
+/** 記入されていない（空白文字のみを含む）かどうか */
+const isBlank = (str: string) => !/\S/.test(str)
 
-  // 印刷製本費: 目的 (printPurpose) は必須
-  (t) =>
-    t.category === TransactionCategory.印刷製本費 && !t.printPurpose?.trim()
-      ? {
-          severity: 'warning',
-          message: '印刷製本費の目的が記入されていません',
-          transaction: t,
-        }
-      : null,
-
-  // 宿泊費: 延べ宿泊数 (numStay) は必須
-  (t) =>
-    t.category === TransactionCategory.宿泊費 && !t.numStay?.trim()
-      ? {
-          severity: 'warning',
-          message: '宿泊費の延べ宿泊数が記入されていません',
-          transaction: t,
-        }
-      : null,
+/** 仕訳ごとに印字される追加の欄 */
+const CATEGORY_COLUMNS: {
+  category: TransactionCategory
+  column: BookColumn
+  label: string
+}[] = [
+  {
+    category: TransactionCategory.謝礼費,
+    column: '謝礼相手先',
+    label: '相手先',
+  },
+  {
+    category: TransactionCategory.通信運搬費,
+    column: '通信運搬用途',
+    label: '用途',
+  },
+  {
+    category: TransactionCategory.印刷製本費,
+    column: '印刷目的',
+    label: '目的',
+  },
+  {
+    category: TransactionCategory.用具等購入費,
+    column: '用具所有者',
+    label: '所有者',
+  },
+  {
+    category: TransactionCategory.宿泊費,
+    column: '延べ宿泊数',
+    label: '延べ宿泊数',
+  },
 ]
 
-export const lint = (transactions: Transaction[]): Problem[] => {
+const rowRules: RowRule[] = [
+  // 仕訳ごとに印字される欄は必須
+  ...CATEGORY_COLUMNS.map(
+    ({ category, column, label }): RowRule =>
+      (r) =>
+        r.category === category && isBlank(r.get(column))
+          ? {
+              severity: 'error',
+              message: `${TransactionCategory[category]}の${label}が記入されていません`,
+            }
+          : null,
+  ),
+]
+
+/** 帳簿のバリデーションを行い、問題の一覧を返す */
+export const lint = (book: string[][]): Problem[] => {
+  if (book.length === 0) {
+    return []
+  }
+
+  const getCell = createCellGetter(book[0])
+  // 空行は読み飛ばす
+  const rows = book.slice(1).flatMap((cells, i): LintRow[] =>
+    isEmptyRow(cells)
+      ? []
+      : [
+          {
+            row: i + 2,
+            get: (column) => getCell(cells, column),
+            category: parseCategory(getCell(cells, '仕訳')),
+          },
+        ],
+  )
+
   const problems: Problem[] = []
-  for (const transaction of transactions) {
-    for (const rule of rules) {
-      const problem = rule(transaction)
-      if (problem) problems.push(problem)
+  for (const r of rows) {
+    for (const rule of rowRules) {
+      const diagnostic = rule(r)
+      if (diagnostic) {
+        problems.push({
+          ...diagnostic,
+          row: r.row,
+          context: `${r.get('日付')} ${r.get('内容')}`.trim(),
+        })
+      }
     }
   }
   return problems

@@ -13,8 +13,8 @@
     </div>
     <ul class="problems-list" role="list" aria-label="問題一覧">
       <li
-        v-for="(problem, i) in problems"
-        :key="i"
+        v-for="problem in problems"
+        :key="`${problem.row}-${problem.message}`"
         class="problem-item"
         :class="problem.severity"
       >
@@ -22,9 +22,9 @@
           problem.severity === 'error' ? '✖' : '⚠'
         }}</span>
         <span class="problem-message">{{ problem.message }}</span>
-        <span class="problem-context">
-          {{ problem.transaction.date }}
-          {{ problem.transaction.description }}
+        <span class="problem-context">{{ problem.context }}</span>
+        <span v-if="problem.row !== null" class="problem-row">
+          {{ problem.row }}行目
         </span>
       </li>
     </ul>
