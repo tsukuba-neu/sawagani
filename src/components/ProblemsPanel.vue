@@ -1,29 +1,27 @@
 <template>
   <div v-if="problems.length > 0" class="problems-panel">
-    <div class="problems-header">
-      <span class="problems-title">問題</span>
-      <span class="problems-count">
-        <span v-if="errorCount > 0" class="count error">
-          <span class="icon" aria-hidden="true">✖</span>{{ errorCount }}
-        </span>
-        <span v-if="warningCount > 0" class="count warning">
-          <span class="icon" aria-hidden="true">⚠</span>{{ warningCount }}
-        </span>
+    <div class="header">
+      <span class="title">問題</span>
+      <span v-if="errorCount > 0" class="count is-error">
+        <span class="icon" aria-hidden="true">✖</span>{{ errorCount }}
+      </span>
+      <span v-if="warningCount > 0" class="count is-warning">
+        <span class="icon" aria-hidden="true">⚠</span>{{ warningCount }}
       </span>
     </div>
-    <ul class="problems-list" role="list" aria-label="問題一覧">
+    <ul class="list" aria-label="問題一覧">
       <li
         v-for="problem in problems"
         :key="`${problem.row}-${problem.message}`"
-        class="problem-item"
-        :class="problem.severity"
+        class="problem"
+        :class="`is-${problem.severity}`"
       >
-        <span class="problem-icon" aria-hidden="true">{{
+        <span class="icon" aria-hidden="true">{{
           problem.severity === 'error' ? '✖' : '⚠'
         }}</span>
-        <span class="problem-message">{{ problem.message }}</span>
-        <span class="problem-context">{{ problem.context }}</span>
-        <span class="problem-row"> {{ problem.row }}行目 </span>
+        <span class="row">{{ problem.row }}行目</span>
+        <span class="message">{{ problem.message }}</span>
+        <span class="context">{{ problem.context }}</span>
       </li>
     </ul>
   </div>
@@ -47,97 +45,77 @@ const warningCount = computed(
 
 <style scoped>
 .problems-panel {
-  background-color: #252526;
-  color: #cccccc;
-  font-family: 'Roboto Mono', monospace;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ccc;
+  font-family: sans-serif;
   font-size: 12px;
   max-height: 200px;
   overflow-y: auto;
-  border-top: 1px solid #3c3c3c;
-}
 
-.problems-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 10px;
-  background-color: #2d2d2d;
-  border-bottom: 1px solid #3c3c3c;
-  position: sticky;
-  top: 0;
-}
+  .header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 10px;
+    background-color: #eee;
+    border-bottom: 1px solid #ccc;
 
-.problems-title {
-  font-weight: bold;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #9d9d9d;
-}
+    .title {
+      font-weight: bold;
+    }
+  }
 
-.problems-count {
-  display: flex;
-  gap: 8px;
-}
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-.count {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 11px;
-}
+  .problem {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 3px 10px;
+    border-bottom: 1px solid #eee;
 
-.count.error {
-  color: #f14c4c;
-}
+    &:hover {
+      background-color: #eee;
+    }
 
-.count.warning {
-  color: #cca700;
-}
+    .message {
+      flex: 1;
+    }
 
-.problems-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+    .context {
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 250px;
+    }
 
-.problem-item {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  padding: 3px 10px;
-  border-bottom: 1px solid #2d2d2d;
-  cursor: default;
-}
+    .row {
+      flex-shrink: 0;
+      min-width: 4em;
+      color: #666;
+      font-family: var(--font-family-number);
+    }
+  }
 
-.problem-item:hover {
-  background-color: #2a2d2e;
-}
+  .icon {
+    flex-shrink: 0;
+    margin-right: 3px;
+  }
 
-.problem-icon {
-  flex-shrink: 0;
-  font-size: 10px;
-}
+  .is-error .icon {
+    color: #d32f2f;
+  }
 
-.problem-item.error .problem-icon {
-  color: #f14c4c;
-}
-
-.problem-item.warning .problem-icon {
-  color: #cca700;
-}
-
-.problem-message {
-  flex: 1;
-}
-
-.problem-context {
-  color: #6a9955;
-  font-size: 11px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 250px;
+  .is-warning .icon {
+    color: #b8860b;
+  }
 }
 
 @media print {
