@@ -10,6 +10,7 @@ import {
   parseCategory,
   toNumber,
 } from './book'
+import { replaceFullWidthWithHalfWidth } from './string'
 
 export type ProblemSeverity = 'error' | 'warning'
 
@@ -30,12 +31,17 @@ type LintRow = {
   get: (column: BookColumn) => string
   /** 仕訳。不正な場合はnull */
   category: TransactionCategory | null
+  /** 仕訳に応じて金額を記入すべき列。仕訳が不正な場合はnull */
+  amountColumn: '収入' | '支出' | null
 }
 
 type Diagnostic = Pick<Problem, 'severity' | 'message'>
 
 /** 帳簿の1行に対するルール */
 type RowRule = (row: LintRow) => Diagnostic | null
+
+/** 複数の行にまたがるルール */
+type BookRule = (rows: LintRow[]) => (Diagnostic & { at: LintRow })[]
 
 /** 記入されていない（空白文字のみを含む）かどうか */
 const isBlank = (str: string) => !/\S/.test(str)
@@ -74,12 +80,16 @@ const CATEGORY_COLUMNS: {
 ]
 
 /** 仕訳に応じて金額を記入すべき列 */
-const amountColumnOf = (category: TransactionCategory): BookColumn | null =>
-  INGRESS_CATEGORIES.includes(category)
-    ? '収入'
-    : EGRESS_CATEGORIES.includes(category)
-      ? '支出'
-      : null
+const amountColumnOf = (
+  category: TransactionCategory | null,
+): LintRow['amountColumn'] =>
+  category === null
+    ? null
+    : INGRESS_CATEGORIES.includes(category)
+      ? '収入'
+      : EGRESS_CATEGORIES.includes(category)
+        ? '支出'
+        : null
 
 const rowRules: RowRule[] = [
   // 仕訳は必須
@@ -121,7 +131,7 @@ const rowRules: RowRule[] = [
 
   // 仕訳に応じた列の金額は必須
   (r) => {
-    const column = r.category === null ? null : amountColumnOf(r.category)
+    const column = r.amountColumn
     return column && isBlank(r.get(column))
       ? { severity: 'error', message: `${column}の金額が記入されていません` }
       : null
@@ -129,7 +139,7 @@ const rowRules: RowRule[] = [
 
   // 仕訳に応じた列の金額は数値として解釈できる必要がある
   (r) => {
-    const column = r.category === null ? null : amountColumnOf(r.category)
+    const column = r.amountColumn
     return column &&
       !isBlank(r.get(column)) &&
       !Number.isFinite(toNumber(r.get(column)))
@@ -160,6 +170,96 @@ const rowRules: RowRule[] = [
             }
           : null,
   ),
+
+  // 仕訳と反対の列に記入された金額は使用されない
+  (r) => {
+    const column = r.amountColumn
+    const otherColumn =
+      column === '収入' ? '支出' : column === '支出' ? '収入' : null
+    return otherColumn && !isBlank(r.get(otherColumn))
+      ? {
+          severity: 'warning',
+          message: `${otherColumn}の列に金額が記入されていますが、仕訳が${column}のため使用されません`,
+        }
+      : null
+  },
+
+  // 金額が0以下
+  (r) => {
+    const column = r.amountColumn
+    if (!column || isBlank(r.get(column))) {
+      return null
+    }
+    const amount = toNumber(r.get(column))
+    return Number.isFinite(amount) && amount <= 0
+      ? { severity: 'warning', message: `${column}の金額が0以下です` }
+      : null
+  },
+
+  // 延べ宿泊数は正の整数
+  (r) => {
+    const numStay = chomp(replaceFullWidthWithHalfWidth(r.get('延べ宿泊数')))
+    return r.category === TransactionCategory.宿泊費 &&
+      numStay !== '' &&
+      !/^[1-9]\d*$/.test(numStay)
+      ? {
+          severity: 'warning',
+          message: `延べ宿泊数「${numStay}」が正の整数ではありません`,
+        }
+      : null
+  },
+
+  // 仕訳ごとの欄が他の仕訳の行に記入されている場合、仕訳の誤りの可能性がある
+  ...CATEGORY_COLUMNS.map(
+    ({ category, column }): RowRule =>
+      (r) =>
+        r.category !== null &&
+        r.category !== category &&
+        !isBlank(r.get(column))
+          ? {
+              severity: 'warning',
+              message: `${column}が記入されていますが、仕訳が${TransactionCategory[category]}ではありません`,
+            }
+          : null,
+  ),
+
+  // 日付は収支計算書で月日を表示できる形式（YYYY/MM/DD、YYYY-MM-DD、MMDD）
+  (r) => {
+    const date = chomp(r.get('日付'))
+    return date !== '' &&
+      !/(\d{4})[/-](\d{1,2})[/-](\d{1,2})/.test(date) &&
+      !/^\d{1,4}$/.test(date)
+      ? {
+          severity: 'warning',
+          message: `日付「${date}」を月日として解釈できません`,
+        }
+      : null
+  },
+]
+
+const bookRules: BookRule[] = [
+  // 支出の領収書Noの重複
+  (rows) => {
+    const egressRows = rows.filter(
+      (r) =>
+        r.category !== null &&
+        EGRESS_CATEGORIES.includes(r.category) &&
+        !isBlank(r.get('領収書No')),
+    )
+    const receiptOf = (r: LintRow) =>
+      chomp(replaceFullWidthWithHalfWidth(r.get('領収書No')))
+    return egressRows
+      .filter((r) =>
+        egressRows.some(
+          (other) => other !== r && receiptOf(other) === receiptOf(r),
+        ),
+      )
+      .map((r) => ({
+        severity: 'warning',
+        message: `領収書No「${receiptOf(r)}」が他の行と重複しています`,
+        at: r,
+      }))
+  },
 ]
 
 /** 帳簿のバリデーションを行い、問題の一覧を返す */
@@ -183,30 +283,46 @@ export const lint = (book: string[][]): Problem[] => {
 
   const getCell = createCellGetter(header)
   // 空行は読み飛ばす
-  const rows = book.slice(1).flatMap((cells, i): LintRow[] =>
-    isEmptyRow(cells)
-      ? []
-      : [
-          {
-            row: i + 2,
-            get: (column) => getCell(cells, column),
-            category: parseCategory(getCell(cells, '仕訳')),
-          },
-        ],
-  )
+  const rows = book.slice(1).flatMap((cells, i): LintRow[] => {
+    if (isEmptyRow(cells)) {
+      return []
+    }
+    const category = parseCategory(getCell(cells, '仕訳'))
+    return [
+      {
+        row: i + 2,
+        get: (column) => getCell(cells, column),
+        category,
+        amountColumn: amountColumnOf(category),
+      },
+    ]
+  })
+
+  const toProblem = (diagnostic: Diagnostic, r: LintRow): Problem => ({
+    ...diagnostic,
+    row: r.row,
+    context: `${r.get('日付')} ${r.get('内容')}`.trim(),
+  })
 
   const problems: Problem[] = []
   for (const r of rows) {
     for (const rule of rowRules) {
       const diagnostic = rule(r)
       if (diagnostic) {
-        problems.push({
-          ...diagnostic,
-          row: r.row,
-          context: `${r.get('日付')} ${r.get('内容')}`.trim(),
-        })
+        problems.push(toProblem(diagnostic, r))
       }
     }
   }
-  return problems
+  for (const rule of bookRules) {
+    for (const { at, ...diagnostic } of rule(rows)) {
+      problems.push(toProblem(diagnostic, at))
+    }
+  }
+
+  // 行番号順に並べ、同じ行ではerrorを先に表示する
+  return problems.sort(
+    (a, b) =>
+      a.row - b.row ||
+      +(a.severity === 'warning') - +(b.severity === 'warning'),
+  )
 }
