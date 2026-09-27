@@ -313,7 +313,7 @@ function getBrightnessFromImageData(
 
 function createCanvasFromImageData(imageData: ImageData): OffscreenCanvas {
   const canvas = new OffscreenCanvas(imageData.width, imageData.height)
-  const ctx = canvas.getContext('2d')
+  const ctx = canvas.getContext('2d')!
   ctx.putImageData(imageData, 0, 0)
   return canvas
 }
