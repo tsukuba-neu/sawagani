@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@hyzyla/pdfium": "2.1.13",
+    "@hyzyla/pdfium": "3.0.0",
     "jsoncrush": "1.1.8",
     "papaparse": "5.7.0",
     "pinia": "4.1.0",
