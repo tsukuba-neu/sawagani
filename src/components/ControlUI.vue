@@ -12,6 +12,17 @@
     <button @click="exportJSON(dataStore.serialized)">
       JSONファイルにエクスポート
     </button>
+    <button @click="exportCSV(dataStore.serialized)">
+      CSVファイルにエクスポート
+    </button>
+    <ButtonWithState
+      :on-click="() => exportToClipboard(dataStore.serialized)"
+      :time="1000"
+    >
+      <template #default>クリップボードにエクスポート</template>
+      <template #loading>クリップボードに書き込み中……</template>
+      <template #completed>クリップボードにコピーしました</template>
+    </ButtonWithState>
     <button
       @click="
         confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
@@ -38,7 +49,7 @@ import { ref } from 'vue'
 import packageJson from '../../package.json'
 import { removeTrailingEmptyRows } from '../lib/array'
 import { parseJSONString } from '../lib/importer/json'
-import { exportJSON } from '../lib/exporter'
+import { exportCSV, exportJSON, exportToClipboard } from '../lib/exporter'
 
 const confirm = (...args: Parameters<typeof window.confirm>) =>
   window.confirm(...args)
