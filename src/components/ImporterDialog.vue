@@ -13,12 +13,13 @@
           <input
             ref="fileInput"
             type="file"
+            accept=".csv,.pdf,.json,text/csv,application/pdf,application/json"
             style="display: none"
             @change="loadFiles(($event.target as HTMLInputElement).files)"
           />
         </div>
         <p>
-          帳簿テンプレートを用いたCSVファイル、sawaganiから出力されたPDFファイルがインポートできます。
+          帳簿テンプレートを用いたCSVファイル、sawaganiから出力されたPDFファイル・JSONファイルがインポートできます。
         </p>
       </div>
       <div v-else-if="state === 'loading'" class="loading">
@@ -37,6 +38,7 @@
 
             <ul>
               <li>帳簿テンプレートを用いたCSVファイル</li>
+              <li>sawaganiからエクスポートされたJSONファイル</li>
               <li>
                 sawaganiから出力されたPDFファイル
                 <ul>

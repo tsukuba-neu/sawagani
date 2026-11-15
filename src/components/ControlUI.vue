@@ -9,6 +9,9 @@
       <template #completed>クリップボードからインポートしました</template>
     </ButtonWithState>
     <button @click="isImporterOpen = true">ファイルからインポート</button>
+    <button @click="exportJSON(dataStore.serialized)">
+      JSONファイルにエクスポート
+    </button>
     <button
       @click="
         confirm('リセットすると入力中のすべてのデータが破棄されます。') &&
@@ -34,6 +37,8 @@ import ImporterDialog from './ImporterDialog.vue'
 import { ref } from 'vue'
 import packageJson from '../../package.json'
 import { removeTrailingEmptyRows } from '../lib/array'
+import { parseJSONString } from '../lib/importer/json'
+import { exportJSON } from '../lib/exporter'
 
 const confirm = (...args: Parameters<typeof window.confirm>) =>
   window.confirm(...args)
@@ -45,6 +50,11 @@ const { book } = storeToRefs(dataStore)
 
 const importFromClipboard = async () => {
   const text = await navigator.clipboard.readText()
+  // エクスポートしたJSONが貼り付けられた場合は状態全体を復元する
+  if (text.trimStart().startsWith('{')) {
+    dataStore.parse(parseJSONString(text))
+    return
+  }
   const { data } = parseCSV<string[]>(text)
   book.value = removeTrailingEmptyRows(data)
 }
